@@ -13,12 +13,12 @@ A chessboard with JavaScript and the p5.js library.S
 * [X] Pawn move (single + double)
 * [X] Rook move
 * [X] Bishop move
-* [ ] Horse move
+* [X] Horse move
 * [X] King move
 * [X] Queen move
 
 ### Capturing
-* [X]  ? Capturing pieces
+* [X] ? Capturing pieces
   
 ### Mating
 * [ ] Check

@@ -2,7 +2,6 @@
 
 //drag pieces to move them
 Object.prototype.dragging = function (x, y) {
-    console.log('test drag prototype');
     this.x = y - this.size / 2
     this.y = x - this.size / 2
 }

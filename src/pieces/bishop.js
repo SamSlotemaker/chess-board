@@ -18,6 +18,16 @@ class Bishop {
 
     //check if piece can move
     move(row, column) {
+        if (this.color !== turn) {
+            return false
+        }
+
+        if (this.color == 'white') {
+            turn = 'black'
+        } else {
+            turn = 'white'
+        }
+
         let oldRow = this.row
         let oldColumn = this.column
 

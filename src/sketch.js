@@ -3,6 +3,7 @@ const boardSize = 600
 let columns = 8
 let rows = 8
 let tileSize = boardSize / columns
+let turn = 'white'
 
 //board
 let board = [
@@ -84,16 +85,16 @@ function setup() {
     pieces[7][7] = new Rook(tileSize, 7, 7, 'white')
 
     // bishops
-    pieces[0][1] = new Bishop(tileSize, 0, 1, 'black')
-    pieces[0][6] = new Bishop(tileSize, 0, 6, 'black')
-    pieces[7][1] = new Bishop(tileSize, 7, 1, 'white')
-    pieces[7][6] = new Bishop(tileSize, 7, 6, 'white')
+    pieces[0][2] = new Bishop(tileSize, 0, 2, 'black')
+    pieces[0][5] = new Bishop(tileSize, 0, 5, 'black')
+    pieces[7][2] = new Bishop(tileSize, 7, 2, 'white')
+    pieces[7][5] = new Bishop(tileSize, 7, 5, 'white')
 
     // horses
-    pieces[0][2] = new Horse(tileSize, 0, 2, 'black')
-    pieces[0][5] = new Horse(tileSize, 0, 5, 'black')
-    pieces[7][2] = new Horse(tileSize, 7, 2, 'white')
-    pieces[7][5] = new Horse(tileSize, 7, 5, 'white')
+    pieces[0][1] = new Horse(tileSize, 0, 1, 'black')
+    pieces[0][6] = new Horse(tileSize, 0, 6, 'black')
+    pieces[7][1] = new Horse(tileSize, 7, 1, 'white')
+    pieces[7][6] = new Horse(tileSize, 7, 6, 'white')
 
     // queens
     pieces[0][3] = new Queen(tileSize, 0, 3, 'black')

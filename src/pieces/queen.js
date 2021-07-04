@@ -19,13 +19,23 @@ class Queen {
 
     //check if piece can move
     move(row, column) {
+        if (this.color !== turn) {
+            return false
+        }
+
+        if (this.color == 'white') {
+            turn = 'black'
+        } else {
+            turn = 'white'
+        }
+
         let oldRow = this.row
         let oldColumn = this.column
 
         let newRow = row
         let newColumn = column
 
-        console.log(`moving bishop from ${oldRow}|${oldColumn} to: ${newRow}|${newColumn}`)
+        console.log(`moving queen from ${oldRow}|${oldColumn} to: ${newRow}|${newColumn}`)
 
         // all possible moves
         let startPosition = [oldRow, oldColumn]
@@ -40,6 +50,7 @@ class Queen {
             let possibleSpot6 = [startPosition[0], startPosition[1] + i]
             let possibleSpot7 = [startPosition[0] - i, startPosition[1]]
             let possibleSpot8 = [startPosition[0], startPosition[1] - i]
+
             possibleMoves.push(...[possibleSpot1, possibleSpot2, possibleSpot3, possibleSpot4, possibleSpot5, possibleSpot6, possibleSpot7, possibleSpot8])
         }
 

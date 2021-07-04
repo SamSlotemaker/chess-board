@@ -1,0 +1,13 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+}
+
+#board_container {
+    width: 800px;
+    height: 800px;
+    margin: auto;
+}
