@@ -11,11 +11,11 @@ A chessboard with JavaScript and the p5.js library.S
 
 ### Moving
 * [X] Pawn move (single + double)
-* [ ] Rook move
-* [ ] Bishop move
+* [X] Rook move
+* [X] Bishop move
 * [ ] Horse move
 * [ ] King move
-* [ ] Queen move
+* [X] Queen move
 
 ### Capturing
 * [X]  ? Capturing pieces
