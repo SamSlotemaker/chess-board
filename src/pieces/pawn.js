@@ -3,8 +3,8 @@ class Pawn {
     constructor(tileSize, y, x, color) {
         this.tileSize = tileSize
         this.size = this.tileSize
-        this.row = Number(y)
-        this.column = Number(x)
+        this.row = y
+        this.column = x
         this.x = this.tileSize * x
         this.y = this.tileSize * y
         this.color = color
@@ -17,36 +17,48 @@ class Pawn {
         }
     }
 
+    //update new position
     update(y, x) {
         this.x = this.tileSize * x
         this.y = this.tileSize * y
     }
 
+    //update position to mouse position
     dragging(x, y) {
         this.x = y - this.size / 2
         this.y = x - this.size / 2
     }
 
+    //check if piece can move
     move(row, column) {
-        console.log('old row: ' + this.row)
-        console.log(this.column)
-
         let oldRow = this.row
         let oldColumn = this.column
 
-        let newRow = Number(row)
-        let newColumn = Number(column)
+        let newRow = row
+        let newColumn = column
 
-        console.log('to:');
-        console.log('new row: ' + newRow)
+        console.log(`moving pawn from ${oldRow}|${oldColumn} to: ${newRow}|${newColumn}`)
 
-        if (newRow == oldRow - 1) {
-            this.row = newRow
-            this.column = newColumn
-            return true
+        let pawnStep;
+        if ((this.color === 'white' && oldRow == 6) || (this.color === 'black' && oldRow == 1)) {
+            pawnStep = 2
+        } else {
+            pawnStep = 1
         }
 
-
+        if (this.color === 'white') {
+            if (newRow >= oldRow - pawnStep && newRow < oldRow) {
+                this.row = newRow
+                this.column = newColumn
+                return true
+            }
+        } else {
+            if (newRow <= oldRow + pawnStep && newRow > oldRow) {
+                this.row = newRow
+                this.column = newColumn
+                return true
+            }
+        }
     }
 
     show() {

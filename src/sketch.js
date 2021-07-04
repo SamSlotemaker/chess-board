@@ -104,6 +104,7 @@ let runOnce = true
 
 function draw() {
 
+    //draw tiles
     //for each row
     for (let i = 0; i < rows; i++) {
         //for each column
@@ -112,12 +113,11 @@ function draw() {
         }
     }
 
-    // show all pieces
+    // draw all pieces
     for (let i = 0; i < rows; i++) {
         //for each column
         for (let j = 0; j < columns; j++) {
             if (typeof pieces[i][j] == 'object') {
-                pieces[i][j].update(i, j)
                 pieces[i][j].show()
             }
         }
@@ -127,16 +127,17 @@ function draw() {
 
 let columnClicked;
 let rowClicked;
+let locked;
 
+//update column/row clicked on mousepress
 function mousePressed() {
     columnClicked = Math.floor(mouseX / tileSize)
     rowClicked = Math.floor(mouseY / tileSize)
 }
 
-//drag piece 
+//drag piece by updating position
 function mouseDragged() {
     pieces[rowClicked][columnClicked].dragging(mouseY, mouseX)
-    pieces[rowClicked][columnClicked].show()
 }
 
 //update position when piece is released
@@ -144,13 +145,23 @@ function mouseReleased() {
     let rowEnded = Math.floor(mouseY / tileSize)
     let columnEnded = Math.floor(mouseX / tileSize)
 
-
-
+    //check if piece can move
     let pieceCanMove = pieces[rowClicked][columnClicked].move(rowEnded, columnEnded)
 
+    //swap places in array with moved piece
     if (pieceCanMove) {
         pieces[rowEnded][columnEnded] = pieces[rowClicked][columnClicked]
         pieces[rowClicked][columnClicked] = ''
+    }
+
+    // draw all pieces again with thier updated positions
+    for (let i = 0; i < rows; i++) {
+        //for each column
+        for (let j = 0; j < columns; j++) {
+            if (typeof pieces[i][j] == 'object') {
+                pieces[i][j].update(i, j)
+            }
+        }
     }
 
 
