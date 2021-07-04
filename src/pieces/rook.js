@@ -30,7 +30,9 @@ class Rook {
         let startPosition = [oldRow, oldColumn]
         let possibleMoves = []
 
+        //for the whole board
         for (let i = 1; i < columns; i++) {
+            //rook can move the whole board, horizontal or vertical in either direction
             let possibleSpot1 = [startPosition[0] + i, startPosition[1]]
             let possibleSpot2 = [startPosition[0], startPosition[1] + i]
             let possibleSpot3 = [startPosition[0] - i, startPosition[1]]
@@ -46,7 +48,6 @@ class Rook {
                 return true
             }
         })
-
 
         //if move is possible, update position and return true
         let pieceCanMove = false;

@@ -30,6 +30,7 @@ class Bishop {
         let startPosition = [oldRow, oldColumn]
         let possibleMoves = []
 
+        //bishop can move in a diagonal across the whole board
         for (let i = 1; i < columns; i++) {
             let possibleSpot1 = [startPosition[0] + i, startPosition[1] + i]
             let possibleSpot2 = [startPosition[0] - i, startPosition[1] - i]

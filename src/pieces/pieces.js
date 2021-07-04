@@ -1,4 +1,6 @@
 //logic that the pieces need to share 
+
+//drag pieces to move them
 Object.prototype.dragging = function (x, y) {
     console.log('test drag prototype');
     this.x = y - this.size / 2

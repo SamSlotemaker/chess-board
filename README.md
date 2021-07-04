@@ -14,7 +14,7 @@ A chessboard with JavaScript and the p5.js library.S
 * [X] Rook move
 * [X] Bishop move
 * [ ] Horse move
-* [ ] King move
+* [X] King move
 * [X] Queen move
 
 ### Capturing
