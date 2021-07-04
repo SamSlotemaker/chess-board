@@ -1,13 +1,19 @@
-* {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-body {
+
+section#board_container {
+    display: grid;
+    place-items: center;
     min-height: 100vh;
 }
 
-#board_container {
-    width: 800px;
-    height: 800px;
-    margin: auto;
+#board {
+    width: 600px;
+    height: 600px;
 }

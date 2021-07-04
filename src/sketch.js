@@ -50,7 +50,9 @@ function preload() {
 
 function setup() {
     background(200)
-    createCanvas(boardSize, boardSize);
+    var myCanvas = createCanvas(boardSize, boardSize);
+    myCanvas.parent("board");
+
 
     //draw the board with tiles
     //for each row
@@ -132,43 +134,56 @@ function draw() {
 
 let columnClicked
 let rowClicked
-let locked
+let locked = false;
 
 //update column/row clicked on mousepress
 function mousePressed() {
+
+    //set clicked rows by mouse coordinates in relation to the canvas
     columnClicked = Math.floor(mouseX / tileSize)
     rowClicked = Math.floor(mouseY / tileSize)
+
+    //check if clicked tile has a piece on it
+    if (typeof pieces[rowClicked][columnClicked] == 'object') {
+        console.log('jaja')
+        locked = true
+    } else {
+        locked = false
+    }
+
 }
 
 //drag piece by updating position
 function mouseDragged() {
-    pieces[rowClicked][columnClicked].dragging(mouseY, mouseX)
+    if (locked) {
+        pieces[rowClicked][columnClicked].dragging(mouseY, mouseX)
+    }
 }
 
 //update position when piece is released
 function mouseReleased() {
-    let rowEnded = Math.floor(mouseY / tileSize)
-    let columnEnded = Math.floor(mouseX / tileSize)
+    if (locked) {
+        let rowEnded = Math.floor(mouseY / tileSize)
+        let columnEnded = Math.floor(mouseX / tileSize)
 
-    //check if piece can move
-    let pieceCanMove = pieces[rowClicked][columnClicked].move(rowEnded, columnEnded)
-    console.log(pieceCanMove)
-    //swap places in array with moved piece
-    if (pieceCanMove) {
-        pieces[rowEnded][columnEnded] = pieces[rowClicked][columnClicked]
-        pieces[rowClicked][columnClicked] = ''
-    }
+        //check if piece can move
+        let pieceCanMove = pieces[rowClicked][columnClicked].move(rowEnded, columnEnded)
+        console.log(pieceCanMove)
+        //swap places in array with moved piece
+        if (pieceCanMove) {
+            pieces[rowEnded][columnEnded] = pieces[rowClicked][columnClicked]
+            pieces[rowClicked][columnClicked] = ''
+        }
 
-    // draw all pieces again with thier updated positions
-    for (let i = 0; i < rows; i++) {
-        //for each column
-        for (let j = 0; j < columns; j++) {
-            if (typeof pieces[i][j] == 'object') {
-                pieces[i][j].update(i, j)
+        // draw all pieces again with thier updated positions
+        for (let i = 0; i < rows; i++) {
+            //for each column
+            for (let j = 0; j < columns; j++) {
+                if (typeof pieces[i][j] == 'object') {
+                    pieces[i][j].update(i, j)
+                }
             }
         }
     }
-
-
-
+    locked = false
 }
