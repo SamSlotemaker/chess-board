@@ -1,4 +1,4 @@
-class Pawn {
+class King {
 
     constructor(tileSize, y, x, color) {
         this.tileSize = tileSize
@@ -17,9 +17,9 @@ class Pawn {
     show() {
         let img;
         if (this.color == 'white') {
-            img = pawnImgWhite
+            img = kingImgWhite
         } else {
-            img = pawnImg
+            img = kingImg
         }
 
         image(img, this.x, this.y, this.size, this.size)

@@ -15,7 +15,13 @@ class Bishop {
     }
 
     show() {
-        // console.log('show bishop')
-        image(bishopImg, this.x, this.y, this.size, this.size)
+        let img;
+        if (this.color == 'white') {
+            img = bishopImgWhite
+        } else {
+            img = bishopImg
+        }
+
+        image(img, this.x, this.y, this.size, this.size)
     }
 }

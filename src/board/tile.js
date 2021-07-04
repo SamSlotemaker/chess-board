@@ -14,7 +14,7 @@ class Tile {
     //draw the tile
     show() {
         //check which color it needs to be by even row or number
-        if (isEven(this.column)) {
+        if (!isEven(this.column)) {
             if (isEven(this.row)) {
                 fill(180, 120, 80)
             } else {
