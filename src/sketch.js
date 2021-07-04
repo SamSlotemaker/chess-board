@@ -1,4 +1,5 @@
 //global values
+const turnElement = document.getElementById('turn')
 const boardSize = 600
 let columns = 8
 let rows = 8
@@ -137,7 +138,7 @@ let rowClicked
 let locked = false;
 
 //update column/row clicked on mousepress
-function mousePressed() {
+function mousePressed(e) {
 
     //set clicked rows by mouse coordinates in relation to the canvas
     columnClicked = Math.floor(mouseX / tileSize)
@@ -145,7 +146,6 @@ function mousePressed() {
 
     //check if clicked tile has a piece on it
     if (typeof pieces[rowClicked][columnClicked] == 'object') {
-        console.log('jaja')
         locked = true
     } else {
         locked = false
@@ -168,11 +168,13 @@ function mouseReleased() {
 
         //check if piece can move
         let pieceCanMove = pieces[rowClicked][columnClicked].move(rowEnded, columnEnded)
-        console.log(pieceCanMove)
         //swap places in array with moved piece
         if (pieceCanMove) {
+            console.log(pieces[rowEnded][columnEnded])
             pieces[rowEnded][columnEnded] = pieces[rowClicked][columnClicked]
             pieces[rowClicked][columnClicked] = ''
+            turnElement.textContent = turn
+
         }
 
         // draw all pieces again with thier updated positions

@@ -13,6 +13,7 @@ class Tile {
 
     //draw the tile
     show() {
+        strokeWeight(0)
         //check which color it needs to be by even row or number
         if (!isEven(this.column)) {
             if (isEven(this.row)) {
