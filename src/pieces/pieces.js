@@ -10,3 +10,7 @@ Object.prototype.update = function (y, x) {
     this.x = this.tileSize * x
     this.y = this.tileSize * y
 }
+
+Object.prototype.show = function () {
+    image(this.img, this.x, this.y, this.size, this.size)
+}

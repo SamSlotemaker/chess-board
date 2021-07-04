@@ -3,25 +3,18 @@ class Queen {
     constructor(tileSize, y, x, color) {
         this.tileSize = tileSize
         this.size = this.tileSize
-        this.row = y + 1
-        this.column = x + 1
+        this.row = y
+        this.column = x
         this.x = this.tileSize * x
         this.y = this.tileSize * y
         this.color = color
-    }
-
-    update() {
-
-    }
-
-    show() {
-        let img;
+        this.img
         if (this.color == 'white') {
-            img = queenImgWhite
+            this.img = queenImgWhite
         } else {
-            img = queenImg
+            this.img = queenImg
         }
-
-        image(img, this.x, this.y, this.size, this.size)
     }
+
+
 }

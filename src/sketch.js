@@ -151,7 +151,7 @@ function mouseReleased() {
 
     //check if piece can move
     let pieceCanMove = pieces[rowClicked][columnClicked].move(rowEnded, columnEnded)
-
+    console.log(pieceCanMove)
     //swap places in array with moved piece
     if (pieceCanMove) {
         pieces[rowEnded][columnEnded] = pieces[rowClicked][columnClicked]

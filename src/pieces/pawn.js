@@ -52,11 +52,4 @@ class Pawn {
         }
     }
 
-    show() {
-        image(this.img, this.x, this.y, this.size, this.size)
-    }
-
-    clicked() {
-        console.log('clicked on pawn')
-    }
 }
