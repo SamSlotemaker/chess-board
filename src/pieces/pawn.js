@@ -1,5 +1,4 @@
 class Pawn {
-
     constructor(tileSize, y, x, color) {
         this.tileSize = tileSize
         this.size = this.tileSize
@@ -15,18 +14,6 @@ class Pawn {
         } else {
             this.img = pawnImg
         }
-    }
-
-    //update new position
-    update(y, x) {
-        this.x = this.tileSize * x
-        this.y = this.tileSize * y
-    }
-
-    //update position to mouse position
-    dragging(x, y) {
-        this.x = y - this.size / 2
-        this.y = x - this.size / 2
     }
 
     //check if piece can move
@@ -46,14 +33,18 @@ class Pawn {
             pawnStep = 1
         }
 
+        //white needs to move up
         if (this.color === 'white') {
-            if (newRow >= oldRow - pawnStep && newRow < oldRow) {
+            //check if it lies between old spot and maximum steps forward
+            if (newRow < oldRow && newRow >= oldRow - pawnStep) {
+                //update new position
                 this.row = newRow
                 this.column = newColumn
                 return true
             }
         } else {
-            if (newRow <= oldRow + pawnStep && newRow > oldRow) {
+            if (newRow > oldRow && newRow <= oldRow + pawnStep) {
+                //update new position
                 this.row = newRow
                 this.column = newColumn
                 return true

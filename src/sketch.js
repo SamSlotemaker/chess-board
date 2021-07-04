@@ -27,6 +27,22 @@ let pieces = [
     ['', '', '', '', '', '', '', ''],
 ]
 
+//prototypes that the pieces need to share 
+Object.prototype.dragging = function (x, y) {
+    console.log('test drag prototype');
+    this.x = y - this.size / 2
+    this.y = x - this.size / 2
+}
+
+//update new position
+Object.prototype.update = function (y, x) {
+    this.x = this.tileSize * x
+    this.y = this.tileSize * y
+}
+
+//update position to mouse position
+
+
 function preload() {
     pawnImg = loadImage('./pieces/images/pawn.png');
     rookImg = loadImage('./pieces/images/rook.png');
@@ -58,7 +74,7 @@ function setup() {
 
 
     // Setup the pieces on the board
-    let color;
+    let color
     //pawns 
     for (let i = 1; i < rows; i += 5) {
         //for each column
@@ -125,9 +141,9 @@ function draw() {
 }
 
 
-let columnClicked;
-let rowClicked;
-let locked;
+let columnClicked
+let rowClicked
+let locked
 
 //update column/row clicked on mousepress
 function mousePressed() {
