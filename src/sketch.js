@@ -53,7 +53,6 @@ function setup() {
         //for each column
         for (let j = 0; j < columns; j++) {
             board[i][j] = new Tile(tileSize, i, j)
-            board[i][j].show()
         }
     }
 
@@ -105,21 +104,55 @@ let runOnce = true
 
 function draw() {
 
+    //for each row
+    for (let i = 0; i < rows; i++) {
+        //for each column
+        for (let j = 0; j < columns; j++) {
+            board[i][j].show()
+        }
+    }
+
     // show all pieces
     for (let i = 0; i < rows; i++) {
         //for each column
         for (let j = 0; j < columns; j++) {
             if (typeof pieces[i][j] == 'object') {
+                pieces[i][j].update(i, j)
                 pieces[i][j].show()
             }
         }
     }
+}
 
-    // run only once
-    if (runOnce) {
-        console.log(pieces)
-        runOnce = false
+
+let columnClicked;
+let rowClicked;
+
+function mousePressed() {
+    columnClicked = Math.floor(mouseX / tileSize)
+    rowClicked = Math.floor(mouseY / tileSize)
+}
+
+//drag piece 
+function mouseDragged() {
+    pieces[rowClicked][columnClicked].dragging(mouseY, mouseX)
+    pieces[rowClicked][columnClicked].show()
+}
+
+//update position when piece is released
+function mouseReleased() {
+    let rowEnded = Math.floor(mouseY / tileSize)
+    let columnEnded = Math.floor(mouseX / tileSize)
+
+
+
+    let pieceCanMove = pieces[rowClicked][columnClicked].move(rowEnded, columnEnded)
+
+    if (pieceCanMove) {
+        pieces[rowEnded][columnEnded] = pieces[rowClicked][columnClicked]
+        pieces[rowClicked][columnClicked] = ''
     }
+
 
 
 }
