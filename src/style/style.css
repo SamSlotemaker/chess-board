@@ -29,3 +29,7 @@ aside.information {
 aside .turn_message {
     margin-top: 2em;
 }
+
+aside #turn {
+    font-size: 2em;
+}
