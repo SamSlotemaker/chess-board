@@ -1,6 +1,5 @@
 # chess-board
-A chessboard with JavaScript and the p5.js library.S
-
+A chessboard with JavaScript and the p5.js library.
 
 ## checklist
 
@@ -17,16 +16,27 @@ A chessboard with JavaScript and the p5.js library.S
 * [X] King move
 * [X] Queen move
 
-* [X] Pawns can't move when piece is infront and need to capture diagonaly 
+* [X] Pawns can't move when piece is infront and need to capture diagonally 
 
-* [ ] Pieces can only move as far as the first object in thier way
+* [ ] Pieces can only move as far as the first object in thier way (except the horse)
 
+* [ ] Castling move
 ### Capturing
-* [X] ? Capturing pieces
+* [X]  Capturing pieces
+* [ ] Pieces can only capture the other color
+* [ ] En Passant capturing
+
   
 ### Mating
 * [ ] Check
 * [ ] Checkmate
+
+### Information
+* [ ] Made moves
+
+
+### Optional
+* [ ] Socket connection for multiplayer
 
 
 
