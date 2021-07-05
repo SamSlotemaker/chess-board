@@ -143,7 +143,7 @@ function draw() {
         if (typeof pieces[rowHovered][columnHovered] === 'object') {
             cursor('grab')
         } else {
-            cursor('pointer')
+            cursor()
         }
     }
 
