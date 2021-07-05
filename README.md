@@ -17,6 +17,10 @@ A chessboard with JavaScript and the p5.js library.S
 * [X] King move
 * [X] Queen move
 
+* [X] Pawns can't move when piece is infront and need to capture diagonaly 
+
+* [ ] Pieces can only move as far as the first object in thier way
+
 ### Capturing
 * [X] ? Capturing pieces
   

@@ -6,6 +6,10 @@ let rows = 8
 let tileSize = boardSize / columns
 let turn = 'white'
 
+// don't let users rightclick the chessboard
+document.addEventListener('contextmenu', event => event.preventDefault());
+
+
 //board
 let board = [
     ['', '', '', '', '', '', '', ''],
@@ -130,6 +134,19 @@ function draw() {
             }
         }
     }
+
+    // change cursor when hovering over a piece
+    let columnHovered = Math.floor(mouseX / tileSize)
+    let rowHovered = Math.floor(mouseY / tileSize)
+
+    if (columnHovered >= 0 && rowHovered >= 0 && columnHovered <= 7 && rowHovered <= 7) {
+        if (typeof pieces[rowHovered][columnHovered] === 'object') {
+            cursor('grab')
+        } else {
+            cursor('pointer')
+        }
+    }
+
 }
 
 
@@ -170,6 +187,13 @@ function mouseReleased() {
         let pieceCanMove = pieces[rowClicked][columnClicked].move(rowEnded, columnEnded)
         //swap places in array with moved piece
         if (pieceCanMove) {
+
+            if (pieces[rowClicked][columnClicked].color == 'white') {
+                turn = 'black'
+            } else {
+                turn = 'white'
+            }
+
             console.log(pieces[rowEnded][columnEnded])
             pieces[rowEnded][columnEnded] = pieces[rowClicked][columnClicked]
             pieces[rowClicked][columnClicked] = ''

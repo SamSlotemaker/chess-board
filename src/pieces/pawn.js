@@ -22,12 +22,6 @@ class Pawn {
             return false
         }
 
-        if (this.color == 'white') {
-            turn = 'black'
-        } else {
-            turn = 'white'
-        }
-
         let oldRow = this.row
         let oldColumn = this.column
 
@@ -35,32 +29,6 @@ class Pawn {
         let newColumn = column
 
         console.log(`moving pawn from ${oldRow}|${oldColumn} to: ${newRow}|${newColumn}`)
-
-        // let pawnStep;
-        // if ((this.color === 'white' && oldRow == 6) || (this.color === 'black' && oldRow == 1)) {
-        //     pawnStep = 2
-        // } else {
-        //     pawnStep = 1
-        // }
-
-
-        // //white needs to move up
-        // if (this.color === 'white') {
-        //     //check if it lies between old spot and maximum steps forward
-        //     if (newRow < oldRow && newRow >= oldRow - pawnStep) {
-        //         //update new position
-        //         this.row = newRow
-        //         this.column = newColumn
-        //         return true
-        //     }
-        // } else {
-        //     if (newRow > oldRow && newRow <= oldRow + pawnStep) {
-        //         //update new position
-        //         this.row = newRow
-        //         this.column = newColumn
-        //         return true
-        //     }
-        // }
 
         // all possible moves
         let startPosition = [oldRow, oldColumn]
@@ -74,6 +42,17 @@ class Pawn {
             if (startPosition[0] == 6) {
                 possibleMoves.push([startPosition[0] - 2, startPosition[1]])
             }
+
+            //pawn needs to capture diagonaly
+            // if there is a piece at a diagonal, add that spot to possible moves
+            if (typeof pieces[startPosition[0] - 1][startPosition[1] - 1] == 'object') {
+                possibleMoves.push([startPosition[0] - 1, startPosition[1] - 1])
+            }
+            if (typeof pieces[startPosition[0] - 1][startPosition[1] + 1] == 'object') {
+                possibleMoves.push([startPosition[0] - 1, startPosition[1] + 1])
+            }
+
+
         } else {
             let possibleSpot1 = [startPosition[0] + 1, startPosition[1]]
             possibleMoves.push(possibleSpot1)
@@ -82,8 +61,17 @@ class Pawn {
             if (startPosition[0] == 1) {
                 possibleMoves.push([startPosition[0] + 2, startPosition[1]])
             }
+
+            //pawn needs to capture diagonaly
+            // if there is a piece at a diagonal, add that spot to possible moves
+            if (typeof pieces[startPosition[0] + 1][startPosition[1] - 1] == 'object') {
+                possibleMoves.push([startPosition[0] + 1, startPosition[1] - 1])
+            }
+            if (typeof pieces[startPosition[0] + 1][startPosition[1] + 1] == 'object') {
+                possibleMoves.push([startPosition[0] + 1, startPosition[1] + 1])
+            }
         }
-        console.log(possibleMoves)
+
 
         // filter out all moves that go outside the board
         let possibleMovesFiltered = possibleMoves.filter(move => {
@@ -93,6 +81,7 @@ class Pawn {
                 return true
             }
         })
+        console.log(possibleMoves)
 
         //if move is possible, update position and return true
         let pieceCanMove = false;

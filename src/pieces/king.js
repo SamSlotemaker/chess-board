@@ -23,12 +23,6 @@ class King {
             return false
         }
 
-        if (this.color == 'white') {
-            turn = 'black'
-        } else {
-            turn = 'white'
-        }
-
         let oldRow = this.row
         let oldColumn = this.column
 
