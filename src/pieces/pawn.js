@@ -36,11 +36,20 @@ class Pawn {
 
         if (this.color === 'white') {
             let possibleSpot1 = [startPosition[0] - 1, startPosition[1]]
-            possibleMoves.push(possibleSpot1)
+
+            //check if there's a piece in the way of a forward move
+            if (typeof pieces[possibleSpot1[0]][possibleSpot1[1]] != 'object') {
+                // push possible move when there isn't
+                possibleMoves.push(possibleSpot1)
+            }
 
             //2 steps possible when not moved yet
             if (startPosition[0] == 6) {
-                possibleMoves.push([startPosition[0] - 2, startPosition[1]])
+                //check if there's a piece in the way of a forward move
+                if (typeof pieces[startPosition[0] - 2][startPosition[1]] != 'object') {
+                    // push possible move when there isn't
+                    possibleMoves.push([startPosition[0] - 2, startPosition[1]])
+                }
             }
 
             //pawn needs to capture diagonaly
@@ -55,11 +64,16 @@ class Pawn {
 
         } else {
             let possibleSpot1 = [startPosition[0] + 1, startPosition[1]]
-            possibleMoves.push(possibleSpot1)
+
+            if (typeof pieces[possibleSpot1[0]][possibleSpot1[1]] != 'object') {
+                possibleMoves.push(possibleSpot1)
+            }
 
             //2 steps possible when not moved yet
             if (startPosition[0] == 1) {
-                possibleMoves.push([startPosition[0] + 2, startPosition[1]])
+                if (typeof pieces[startPosition[0] + 2][startPosition[1]] != 'object') {
+                    possibleMoves.push([startPosition[0] + 2, startPosition[1]])
+                }
             }
 
             //pawn needs to capture diagonaly
