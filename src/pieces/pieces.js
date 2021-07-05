@@ -12,6 +12,17 @@ Object.prototype.update = function (y, x) {
     this.y = this.tileSize * y
 }
 
+//show img
 Object.prototype.show = function () {
     image(this.img, this.x, this.y, this.size, this.size)
+}
+
+//check if piece would capture own color
+function wouldCaptureOwnPiece(pieces, oldRow, oldColumn, newRow, newColumn) {
+    if (pieces[newRow][newColumn].color == pieces[oldRow][oldColumn].color) {
+        console.log('cant capture own piece')
+        return true
+    } else {
+        return false
+    }
 }
