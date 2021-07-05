@@ -7,6 +7,11 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+body {
+    background: #425c5b;
+    color: white
+}
+
 
 section#board_container {
     display: grid;
