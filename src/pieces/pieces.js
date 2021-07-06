@@ -26,3 +26,41 @@ function wouldCaptureOwnPiece(pieces, oldRow, oldColumn, newRow, newColumn) {
         return false
     }
 }
+
+
+// Check if there are pieces in the way
+//check down
+function checkRoadblockDown(pieces, oldRow, oldColumn) {
+    for (let i = oldRow + 1; i < rows; i++) {
+        if (typeof pieces[i][oldColumn] == 'object') {
+            return [i, oldColumn]
+        }
+    }
+}
+
+//check up
+function checkRoadblockUp(pieces, oldRow, oldColumn) {
+    for (let i = (oldRow - 1); i >= 0; i--) {
+        if (typeof pieces[i][oldColumn] == 'object') {
+            return [i, oldColumn]
+        }
+    }
+}
+
+//check right
+function checkRoadblockRight(pieces, oldRow, oldColumn) {
+    for (let i = (oldColumn + 1); i < rows; i++) {
+        if (typeof pieces[oldRow][i] == 'object') {
+            return [oldRow, i]
+        }
+    }
+}
+
+//check left
+function checkRoadblockLeft(pieces, oldRow, oldColumn) {
+    for (let i = (oldColumn - 1); i >= 0; i--) {
+        if (typeof pieces[oldRow][i] == 'object') {
+            return [oldRow, i]
+        }
+    }
+}
