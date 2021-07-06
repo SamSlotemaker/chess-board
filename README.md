@@ -19,11 +19,13 @@ A chessboard with JavaScript and the p5.js library.
 * [X] Pawns can't move when piece is infront and need to capture diagonally 
 
 * [ ] Pieces can only move as far as the first object in thier way (except the horse)
+* [X] ^ Horizontal & Vertical
+* [ ] ^ Diagonal
 
 * [ ] Castling move
 ### Capturing
 * [X]  Capturing pieces
-* [ ] Pieces can only capture the other color
+* [X] Pieces can only capture the other color
 * [ ] En Passant capturing
 
   
