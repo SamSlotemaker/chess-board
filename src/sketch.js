@@ -33,10 +33,7 @@ let pieces = [
     ['', '', '', '', '', '', '', ''],
 ]
 
-
-//update position to mouse position
-
-
+//load the images
 function preload() {
     pawnImg = loadImage('./pieces/images/pawn.png');
     rookImg = loadImage('./pieces/images/rook.png');
@@ -53,6 +50,7 @@ function preload() {
     horseImgWhite = loadImage('./pieces/images/horse_white.png');
 }
 
+//setup runs once
 function setup() {
     background(200)
     var myCanvas = createCanvas(boardSize, boardSize);
@@ -68,21 +66,10 @@ function setup() {
         }
     }
 
-
-    // Setup the pieces on the board
-    let color
-    //pawns 
-    for (let i = 1; i < rows; i += 5) {
-        //for each column
-        for (let j = 0; j < columns; j++) {
-            if (i < 5) {
-                color = 'black'
-            }
-            else {
-                color = 'white'
-            }
-            pieces[i][j] = new Pawn(tileSize, i, j, color)
-        }
+    //pawns
+    for (let j = 0; j < columns; j++) {
+        pieces[1][j] = new Pawn(tileSize, 1, j, 'black')
+        pieces[6][j] = new Pawn(tileSize, 6, j, 'white')
     }
 
     // rooks
@@ -114,6 +101,7 @@ function setup() {
 
 let runOnce = true
 
+//draws runs constantly
 function draw() {
 
     //draw tiles
@@ -135,7 +123,7 @@ function draw() {
         }
     }
 
-    // change cursor when hovering over a piece
+    // change cursor when hovering over a piece check it by deviding the X and Y by the tilesize
     let columnHovered = Math.floor(mouseX / tileSize)
     let rowHovered = Math.floor(mouseY / tileSize)
 
@@ -148,7 +136,6 @@ function draw() {
     }
 
 }
-
 
 let columnClicked
 let rowClicked
@@ -180,28 +167,26 @@ function mouseDragged() {
 //update position when piece is released
 function mouseReleased() {
     if (locked) {
-        let rowEnded = Math.floor(mouseY / tileSize)
-        let columnEnded = Math.floor(mouseX / tileSize)
+        let rowReleased = Math.floor(mouseY / tileSize)
+        let columnReleased = Math.floor(mouseX / tileSize)
 
         //check if piece can move
-        let pieceCanMove = pieces[rowClicked][columnClicked].move(rowEnded, columnEnded)
-        //swap places in array with moved piece
-        if (pieceCanMove) {
+        let pieceCanMove = pieces[rowClicked][columnClicked].move(rowReleased, columnReleased)
 
+        if (pieceCanMove) {
             if (pieces[rowClicked][columnClicked].color == 'white') {
                 turn = 'black'
             } else {
                 turn = 'white'
             }
-
-            console.log(pieces[rowEnded][columnEnded])
-            pieces[rowEnded][columnEnded] = pieces[rowClicked][columnClicked]
+            //swap places in array with moved piece
+            pieces[rowReleased][columnReleased] = pieces[rowClicked][columnClicked]
             pieces[rowClicked][columnClicked] = ''
             turnElement.textContent = turn
 
         }
 
-        // draw all pieces again with thier updated positions
+        // update the piece locations with thier new positions
         for (let i = 0; i < rows; i++) {
             //for each column
             for (let j = 0; j < columns; j++) {

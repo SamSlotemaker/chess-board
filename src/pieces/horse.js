@@ -64,11 +64,14 @@ class Horse {
 
             //if a possible move is the same as the move that you're trying to do
             if (move[0] === newRow && move[1] === newColumn) {
-                //update new position
-                this.row = newRow
-                this.column = newColumn
-                // return true
-                pieceCanMove = true
+                // check if piece would capture own color, if not, move is valid
+                if (!wouldCaptureOwnPiece(pieces, oldRow, oldColumn, newRow, newColumn)) {
+                    //update new position
+                    this.row = newRow
+                    this.column = newColumn
+                    // return true
+                    pieceCanMove = true
+                }
             }
         })
         return pieceCanMove

@@ -53,45 +53,7 @@ class Rook {
         })
 
         // CHECK WHICH PIECES ARE IN THE WAY
-        let piecesInTheWay = []
-
-        //check down
-        if (checkRoadblockDown(pieces, oldRow, oldColumn)) {
-            piecesInTheWay.push(checkRoadblockDown(pieces, oldRow, oldColumn))
-        }
-        // filter every move that goes further
-
-        //check up
-        if (checkRoadblockUp(pieces, oldRow, oldColumn)) {
-            let roadBlockUp = checkRoadblockUp(pieces, oldRow, oldColumn)
-            piecesInTheWay.push(checkRoadblockUp(pieces, oldRow, oldColumn))
-
-            // filter every move that goes further
-            possibleMovesFiltered = possibleMovesFiltered.filter(move => {
-                if (move[0] >= roadBlockUp[0]) {
-                    console.log(move[0])
-                    console.log(roadBlockUp[0])
-                    console.log('true')
-                    return move
-                }
-            })
-
-        }
-
-
-        //check right
-        if (checkRoadblockRight(pieces, oldRow, oldColumn)) {
-            piecesInTheWay.push(checkRoadblockRight(pieces, oldRow, oldColumn))
-        }
-        // filter every move that goes further
-
-        //check left
-        if (checkRoadblockLeft(pieces, oldRow, oldColumn)) {
-            piecesInTheWay.push(checkRoadblockLeft(pieces, oldRow, oldColumn))
-        }
-        // filter every move that goes further
-
-        console.log(piecesInTheWay);
+        possibleMovesFiltered = checkStraightRoadblocks(pieces, possibleMovesFiltered, oldRow, oldColumn)
 
         //if move is possible, update position and return true
         let pieceCanMove = false;

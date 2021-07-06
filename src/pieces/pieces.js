@@ -29,6 +29,39 @@ function wouldCaptureOwnPiece(pieces, oldRow, oldColumn, newRow, newColumn) {
 
 
 // Check if there are pieces in the way
+
+// check horizontals
+function checkStraightRoadblocks(pieces, possibleMoves, oldRow, oldColumn) {
+    let possibleMovesArray = [...possibleMoves]
+    //check down
+    if (checkRoadblockDown(pieces, oldRow, oldColumn)) {
+        let roadBlockDown = checkRoadblockDown(pieces, oldRow, oldColumn)
+        possibleMovesArray = filterRoadBlockDown(possibleMovesArray, roadBlockDown)
+    }
+
+    //check up
+    if (checkRoadblockUp(pieces, oldRow, oldColumn)) {
+        let roadBlockUp = checkRoadblockUp(pieces, oldRow, oldColumn)
+        possibleMovesArray = filterRoadBlockTop(possibleMovesArray, roadBlockUp)
+    }
+
+    //check right
+    if (checkRoadblockRight(pieces, oldRow, oldColumn)) {
+        let roadBlockRight = checkRoadblockRight(pieces, oldRow, oldColumn)
+        possibleMovesArray = filterRoadBlockRight(possibleMovesArray, roadBlockRight)
+    }
+    // filter every move that goes further
+
+    //check left
+    if (checkRoadblockLeft(pieces, oldRow, oldColumn)) {
+        let roadBlockLeft = checkRoadblockLeft(pieces, oldRow, oldColumn)
+        possibleMovesArray = filterRoadBlockLeft(possibleMovesArray, roadBlockLeft)
+    }
+
+    return possibleMovesArray
+}
+
+
 //check down
 function checkRoadblockDown(pieces, oldRow, oldColumn) {
     for (let i = oldRow + 1; i < rows; i++) {
@@ -63,4 +96,37 @@ function checkRoadblockLeft(pieces, oldRow, oldColumn) {
             return [oldRow, i]
         }
     }
+}
+
+// filter the possible moves by the roadblocks
+function filterRoadBlockTop(movesArray, roadBlock) {
+    return movesArray.filter(move => {
+        if (move[0] >= roadBlock[0] || move[1] != roadBlock[1]) {
+            return move
+        }
+    })
+}
+
+function filterRoadBlockDown(movesArray, roadBlock) {
+    return movesArray.filter(move => {
+        if (move[0] <= roadBlock[0] || move[1] != roadBlock[1]) {
+            return move
+        }
+    })
+}
+
+function filterRoadBlockRight(movesArray, roadBlock) {
+    return movesArray.filter(move => {
+        if (move[1] <= roadBlock[1] || move[0] != roadBlock[0]) {
+            return move
+        }
+    })
+}
+
+function filterRoadBlockLeft(movesArray, roadBlock) {
+    return movesArray.filter(move => {
+        if (move[1] >= roadBlock[1] || move[0] != roadBlock[0]) {
+            return move
+        }
+    })
 }
