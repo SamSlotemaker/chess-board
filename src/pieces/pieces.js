@@ -113,7 +113,6 @@ function checkRoadblockDiagonalDownRight(pieces, oldRow, oldColumn) {
 }
 //check down left
 function checkRoadblockDiagonalDownLeft(pieces, oldRow, oldColumn) {
-    console.log(oldRow, oldColumn)
     for (let i = 1; i < rows; i++) {
         if (oldRow + i < 8 && oldColumn - i >= 0)
             if (typeof pieces[oldRow + i][oldColumn - i] == 'object') {
@@ -123,7 +122,6 @@ function checkRoadblockDiagonalDownLeft(pieces, oldRow, oldColumn) {
 }
 //check up right
 function checkRoadblockDiagonalUpRight(pieces, oldRow, oldColumn) {
-    console.log(oldRow, oldColumn)
     for (let i = 1; i < rows; i++) {
         if (oldRow - i >= 0 && oldColumn + i < 8)
             if (typeof pieces[oldRow - i][oldColumn + i] == 'object') {
@@ -178,9 +176,10 @@ function filterRoadBlockLeft(movesArray, roadBlock) {
 }
 
 // DIAGONAL
-function filterRoadBlockUpRight(movesArray, roadBlock) {
+function filterRoadBlockUpRight(movesArray, roadBlock, oldRow, oldColumn) {
     return movesArray.filter(move => {
-        if (move[0] <= roadBlock[0] && move[1] <= roadBlock[1] || move[0] == roadBlock[0] || move[1] === roadBlock[1]) {
+        console.log(move[0], oldRow, move[1], oldColumn)
+        if (move[0] == oldRow || move[1] == oldColumn || (move[0] >= roadBlock[0] && move[1] <= roadBlock[1])) {
             return move
         }
     })
