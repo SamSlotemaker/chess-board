@@ -42,7 +42,7 @@ function checkStraightRoadblocks(pieces, possibleMoves, oldRow, oldColumn) {
     //check up
     if (checkRoadblockUp(pieces, oldRow, oldColumn)) {
         let roadBlockUp = checkRoadblockUp(pieces, oldRow, oldColumn)
-        possibleMovesArray = filterRoadBlockTop(possibleMovesArray, roadBlockUp)
+        possibleMovesArray = filterRoadBlockUp(possibleMovesArray, roadBlockUp)
     }
 
     //check right
@@ -62,6 +62,7 @@ function checkStraightRoadblocks(pieces, possibleMoves, oldRow, oldColumn) {
 }
 
 
+// VERTICALS 
 //check down
 function checkRoadblockDown(pieces, oldRow, oldColumn) {
     for (let i = oldRow + 1; i < rows; i++) {
@@ -80,6 +81,7 @@ function checkRoadblockUp(pieces, oldRow, oldColumn) {
     }
 }
 
+// HORIZONTALS
 //check right
 function checkRoadblockRight(pieces, oldRow, oldColumn) {
     for (let i = (oldColumn + 1); i < rows; i++) {
@@ -98,8 +100,51 @@ function checkRoadblockLeft(pieces, oldRow, oldColumn) {
     }
 }
 
+// DIAGONALS
+//check down right
+function checkRoadblockDiagonalDownRight(pieces, oldRow, oldColumn) {
+    console.log(oldRow, oldColumn)
+    for (let i = 1; i < rows; i++) {
+        if (oldRow + i < 8 && oldColumn + i < 8)
+            if (typeof pieces[oldRow + i][oldColumn + i] == 'object') {
+                return [oldRow + i, oldColumn + i]
+            }
+    }
+}
+//check down left
+function checkRoadblockDiagonalDownLeft(pieces, oldRow, oldColumn) {
+    console.log(oldRow, oldColumn)
+    for (let i = 1; i < rows; i++) {
+        if (oldRow + i < 8 && oldColumn - i >= 0)
+            if (typeof pieces[oldRow + i][oldColumn - i] == 'object') {
+                return [oldRow + i, oldColumn - i]
+            }
+    }
+}
+//check up right
+function checkRoadblockDiagonalUpRight(pieces, oldRow, oldColumn) {
+    console.log(oldRow, oldColumn)
+    for (let i = 1; i < rows; i++) {
+        if (oldRow - i >= 0 && oldColumn + i < 8)
+            if (typeof pieces[oldRow - i][oldColumn + i] == 'object') {
+                return [oldRow - i, oldColumn + i]
+            }
+    }
+}
+//check up left
+function checkRoadblockDiagonalUpLeft(pieces, oldRow, oldColumn) {
+    console.log(oldRow, oldColumn)
+    for (let i = 1; i < rows; i++) {
+        if (oldRow - i >= 0 && oldColumn - i >= 0)
+            if (typeof pieces[oldRow - i][oldColumn - i] == 'object') {
+                return [oldRow - i, oldColumn - i]
+            }
+    }
+}
+
 // filter the possible moves by the roadblocks
-function filterRoadBlockTop(movesArray, roadBlock) {
+// VERTICAL
+function filterRoadBlockUp(movesArray, roadBlock) {
     return movesArray.filter(move => {
         if (move[0] >= roadBlock[0] || move[1] != roadBlock[1]) {
             return move
@@ -115,6 +160,7 @@ function filterRoadBlockDown(movesArray, roadBlock) {
     })
 }
 
+// HORIZONTAL
 function filterRoadBlockRight(movesArray, roadBlock) {
     return movesArray.filter(move => {
         if (move[1] <= roadBlock[1] || move[0] != roadBlock[0]) {
@@ -126,6 +172,15 @@ function filterRoadBlockRight(movesArray, roadBlock) {
 function filterRoadBlockLeft(movesArray, roadBlock) {
     return movesArray.filter(move => {
         if (move[1] >= roadBlock[1] || move[0] != roadBlock[0]) {
+            return move
+        }
+    })
+}
+
+// DIAGONAL
+function filterRoadBlockUpRight(movesArray, roadBlock) {
+    return movesArray.filter(move => {
+        if (move[0] <= roadBlock[0] && move[1] <= roadBlock[1] || move[0] == roadBlock[0] || move[1] === roadBlock[1]) {
             return move
         }
     })

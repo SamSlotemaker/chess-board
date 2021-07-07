@@ -57,8 +57,9 @@ class Queen {
             }
         })
 
-
         // CHECK WHICH PIECES ARE IN THE WAY
+        const roadBlockUpRight = checkRoadblockDiagonalUpRight(pieces, oldRow, oldColumn)
+        possibleMovesFiltered = filterRoadBlockUpRight(pieces, roadBlockUpRight)
         possibleMovesFiltered = checkStraightRoadblocks(pieces, possibleMovesFiltered, oldRow, oldColumn)
 
         //if move is possible, update position and return true
