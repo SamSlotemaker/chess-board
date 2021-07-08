@@ -197,17 +197,31 @@ function mouseReleased() {
             //swap places in array with moved piece
 
             const oldPiece = pieces[rowReleased][columnReleased]
+            console.log(oldPiece)
             const movedPiece = pieces[rowClicked][columnClicked]
             pieces[rowReleased][columnReleased] = pieces[rowClicked][columnClicked]
             pieces[rowClicked][columnClicked] = ''
 
             const movedColor = movedPiece.color
             let setCheck = false
+
+            console.log(pieces)
             for (let i = 0; i < rows; i++) {
                 //for each column
                 for (let j = 0; j < columns; j++) {
+
+                    //log when a king is in check
+                    if (getPieceName(pieces, [i, j]) == 'king') {
+                        console.log(`${pieces[i][j].color} found at ${i}, ${j}`)
+                        if (pieces[i][j].isInCheck(i, j)) {
+                            console.log(pieces[i][j].color + ' king is in check')
+                        }
+                    }
+
+                    //find the king with the same color as the player thats moving
                     if (getPieceName(pieces, [i, j]) == 'king' && pieces[i][j].color == movedColor) {
-                        if (pieces[i][j].isInCheck()) {
+                        //if he puts himself in check
+                        if (pieces[i][j].isInCheck(i, j)) {
                             console.log(movedColor + ' put himself in check')
                             //reset moves because you can't put yourself in check
                             pieces[rowClicked][columnClicked] = movedPiece
@@ -243,10 +257,9 @@ function mouseReleased() {
                 //remove possible move colors 
                 board[i][j].possibleMove = false;
                 if (typeof pieces[i][j] == 'object') {
-                    if (getPieceName(pieces, [i, j]) == 'king') {
-                        pieces[i][j].isInCheck()
-                    }
-
+                    // if (getPieceName(pieces, [i, j]) == 'king') {
+                    //     pieces[i][j].isInCheck()
+                    // }
                     pieces[i][j].update(i, j)
                 }
             }

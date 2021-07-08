@@ -67,9 +67,6 @@ class Rook {
             return false
         }
 
-        let oldRow = this.row
-        let oldColumn = this.column
-
         let newRow = row
         let newColumn = column
 
@@ -80,9 +77,6 @@ class Rook {
 
             //if a possible move is the same as the move that you're trying to do
             if (move[0] === newRow && move[1] === newColumn) {
-                //update new position
-                this.row = newRow
-                this.column = newColumn
                 // return true
                 pieceCanMove = true
             }

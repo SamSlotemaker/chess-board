@@ -63,30 +63,12 @@ class King {
         })
     }
 
-    isInCheck() {
+    isInCheck(i, j) {
         //check every roadblock, if corresponding roadblocks are checking pieces. 
         //check for knight moves
-        const row = this.row
-        const column = this.column
-
-
-
-
-        // check horzontals + verticals for rook or queen
-        // const pieceUp = getPieceName(pieces, roadblockUp)
-        // const pieceDown = getPieceName(pieces, roadBlockDown)
-        // const pieceLeft = getPieceName(pieces, roadBlockLeft)
-        // const pieceRight = getPieceName(pieces, roadBlockRight)
-
-
-        // const pieceUpRight = getPieceName(pieces, roadblockUpRight)
-        // const pieceUpLeft = getPieceName(pieces, roadblockUpLeft)
-        // const pieceDownRight = getPieceName(pieces, roadblockDownRight)
-        // const pieceDownLeft = getPieceName(pieces, roadblockDownLeft)
-        // const pieceUpRightColor = getPieceColor(pieces, roadblockUpRight)
-        // const pieceUpLeftColor = getPieceColor(pieces, roadblockUpLeft)
-        // const pieceDownRightColor = getPieceColor(pieces, roadblockDownRight)
-        // const pieceDownLeftColor = getPieceColor(pieces, roadblockDownLeft)
+        const row = i
+        const column = j
+        console.log(i, j)
 
         const roadblockDown = checkRoadblockDown(pieces, row, column)
         const roadblockUp = checkRoadblockUp(pieces, row, column)
@@ -111,14 +93,14 @@ class King {
         let possibleHorseSpots = []
 
         //horse moves, approx +2 +1 in every direction
-        let possibleSpot1 = [this.row + 2, this.column + 1]
-        let possibleSpot2 = [this.row + 2, this.column - 1]
-        let possibleSpot3 = [this.row + 1, this.column + 2]
-        let possibleSpot4 = [this.row + 1, this.column - 2]
-        let possibleSpot5 = [this.row - 2, this.column - 1]
-        let possibleSpot6 = [this.row - 2, this.column + 1]
-        let possibleSpot7 = [this.row - 1, this.column - 2]
-        let possibleSpot8 = [this.row - 1, this.column + 2]
+        let possibleSpot1 = [row + 2, column + 1]
+        let possibleSpot2 = [row + 2, column - 1]
+        let possibleSpot3 = [row + 1, column + 2]
+        let possibleSpot4 = [row + 1, column - 2]
+        let possibleSpot5 = [row - 2, column - 1]
+        let possibleSpot6 = [row - 2, column + 1]
+        let possibleSpot7 = [row - 1, column - 2]
+        let possibleSpot8 = [row - 1, column + 2]
 
         possibleHorseSpots.push(...[possibleSpot1, possibleSpot2, possibleSpot3, possibleSpot4, possibleSpot5, possibleSpot6, possibleSpot7, possibleSpot8])
         // filter out all moves that go outside the board
@@ -131,6 +113,7 @@ class King {
         })
         possibleMovesFiltered.forEach(spot => {
             if (isOpposingHorse(pieces, spot, this.color)) {
+                console.log('opposing horse found')
                 check = true
             }
         })
@@ -156,7 +139,6 @@ class King {
             //if a possible move is the same as the move that you're trying to do
             if (move[0] === newRow && move[1] === newColumn) {
                 // check if piece would capture own color, if not, move is valid
-
                 // return true
                 pieceCanMove = true
             }
