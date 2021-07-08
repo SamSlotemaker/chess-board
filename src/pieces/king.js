@@ -134,9 +134,7 @@ class King {
                 check = true
             }
         })
-
-        console.log(`${this.color} king is in check: ${check}`)
-
+        return check
     }
 
     //check if piece can move
@@ -158,9 +156,7 @@ class King {
             //if a possible move is the same as the move that you're trying to do
             if (move[0] === newRow && move[1] === newColumn) {
                 // check if piece would capture own color, if not, move is valid
-                //update new position
-                this.row = newRow
-                this.column = newColumn
+
                 // return true
                 pieceCanMove = true
             }

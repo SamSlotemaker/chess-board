@@ -194,19 +194,46 @@ function mouseReleased() {
         let pieceCanMove = pieces[rowClicked][columnClicked].move(rowReleased, columnReleased)
 
         if (pieceCanMove) {
-            if (pieces[rowClicked][columnClicked].color == 'white') {
-                turn = 'black'
-            } else {
-                turn = 'white'
-            }
             //swap places in array with moved piece
+
+            const oldPiece = pieces[rowReleased][columnReleased]
+            const movedPiece = pieces[rowClicked][columnClicked]
             pieces[rowReleased][columnReleased] = pieces[rowClicked][columnClicked]
             pieces[rowClicked][columnClicked] = ''
+
+            const movedColor = movedPiece.color
+            let setCheck = false
+            for (let i = 0; i < rows; i++) {
+                //for each column
+                for (let j = 0; j < columns; j++) {
+                    if (getPieceName(pieces, [i, j]) == 'king' && pieces[i][j].color == movedColor) {
+                        if (pieces[i][j].isInCheck()) {
+                            console.log(movedColor + ' put himself in check')
+                            //reset moves because you can't put yourself in check
+                            pieces[rowClicked][columnClicked] = movedPiece
+                            pieces[rowReleased][columnReleased] = oldPiece
+                            setCheck = true;
+                        }
+                    }
+                }
+            }
+
+            if (!setCheck) {
+                //update new position
+                pieces[rowReleased][columnReleased].row = rowReleased
+                pieces[rowReleased][columnReleased].column = columnReleased
+
+                //swap turns
+                if (movedPiece.color == 'white') {
+                    turn = 'black'
+                } else {
+                    turn = 'white'
+                }
+            }
 
             if (turnElement) {
                 turnElement.textContent = turn
             }
-
         }
 
         // update the piece locations with thier new positions
@@ -216,7 +243,6 @@ function mouseReleased() {
                 //remove possible move colors 
                 board[i][j].possibleMove = false;
                 if (typeof pieces[i][j] == 'object') {
-
                     if (getPieceName(pieces, [i, j]) == 'king') {
                         pieces[i][j].isInCheck()
                     }
