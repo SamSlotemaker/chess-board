@@ -73,8 +73,6 @@ class Bishop {
         let newRow = row
         let newColumn = column
 
-        console.log(`moving bishop from ${oldRow}|${oldColumn} to: ${newRow}|${newColumn}`)
-
         //if move is possible, update position and return true
         let pieceCanMove = false;
         this.possibleMoves.forEach(move => {
@@ -82,13 +80,11 @@ class Bishop {
             //if a possible move is the same as the move that you're trying to do
             if (move[0] === newRow && move[1] === newColumn) {
                 // check if piece would capture own color, if not, move is valid
-                if (!wouldCaptureOwnPiece(pieces, oldRow, oldColumn, newRow, newColumn)) {
-                    //update new position
-                    this.row = newRow
-                    this.column = newColumn
-                    // return true
-                    pieceCanMove = true
-                }
+                //update new position
+                this.row = newRow
+                this.column = newColumn
+                // return true
+                pieceCanMove = true
             }
         })
         return pieceCanMove

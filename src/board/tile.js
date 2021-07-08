@@ -30,10 +30,13 @@ class Tile {
 
         if (this.possibleMove) {
             //draw a litle circle in the middle of the square
-            fill(255, 40, 255)
+            // strokeWeight(1)
+            stroke(255)
+            fill(70, 100, 70)
             translate(this.size / 2, this.size / 2)
             circle(this.x, this.y, this.size / 2)
             translate(-(this.size / 2), -(this.size / 2))
+            strokeWeight(0)
         }
     }
 }

@@ -7,7 +7,11 @@ let tileSize = boardSize / columns
 let turn = 'white'
 
 // don't let users rightclick the chessboard
-document.addEventListener('contextmenu', event => event.preventDefault());
+document.addEventListener('contextmenu', (event) => {
+    if (event.target.nodeName.toLowerCase() == 'canvas') {
+        event.preventDefault();
+    }
+})
 
 
 //board
@@ -144,6 +148,20 @@ let locked = false;
 //update column/row clicked on mousepress
 function mousePressed(e) {
 
+    //if mouse has already been pressed, reset the piece
+    if (locked) {
+        for (let i = 0; i < rows; i++) {
+            //for each column
+            for (let j = 0; j < columns; j++) {
+                //remove possible move colors 
+                board[i][j].possibleMove = false;
+                if (typeof pieces[i][j] == 'object') {
+                    pieces[i][j].update(i, j)
+                }
+            }
+        }
+    }
+
     //set clicked rows by mouse coordinates in relation to the canvas
     columnClicked = Math.floor(mouseX / tileSize)
     rowClicked = Math.floor(mouseY / tileSize)
@@ -184,7 +202,10 @@ function mouseReleased() {
             //swap places in array with moved piece
             pieces[rowReleased][columnReleased] = pieces[rowClicked][columnClicked]
             pieces[rowClicked][columnClicked] = ''
-            turnElement.textContent = turn
+
+            if (turnElement) {
+                turnElement.textContent = turn
+            }
 
         }
 

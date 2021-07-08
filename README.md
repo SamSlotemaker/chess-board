@@ -34,7 +34,7 @@ A chessboard with JavaScript and the p5.js library.
 * [ ] Checkmate
 
 ### Information
-* [ ] Show Possible moves on the tiles
+* [X] Show Possible moves on the tiles
 * [ ] Made moves
 
 

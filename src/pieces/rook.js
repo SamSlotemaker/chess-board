@@ -73,7 +73,6 @@ class Rook {
         let newRow = row
         let newColumn = column
 
-        console.log(`moving rook from ${oldRow}|${oldColumn} to: ${newRow}|${newColumn}`)
 
         //if move is possible, update position and return true
         let pieceCanMove = false;
@@ -81,13 +80,11 @@ class Rook {
 
             //if a possible move is the same as the move that you're trying to do
             if (move[0] === newRow && move[1] === newColumn) {
-                if (!wouldCaptureOwnPiece(pieces, oldRow, oldColumn, newRow, newColumn)) {
-                    //update new position
-                    this.row = newRow
-                    this.column = newColumn
-                    // return true
-                    pieceCanMove = true
-                }
+                //update new position
+                this.row = newRow
+                this.column = newColumn
+                // return true
+                pieceCanMove = true
             }
         })
         return pieceCanMove

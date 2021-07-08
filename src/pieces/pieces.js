@@ -20,7 +20,6 @@ Object.prototype.show = function () {
 //check if piece would capture own color
 function wouldCaptureOwnPiece(pieces, oldRow, oldColumn, newRow, newColumn) {
     if (pieces[newRow][newColumn].color == pieces[oldRow][oldColumn].color) {
-        console.log('cant capture own piece')
         return true
     } else {
         return false
