@@ -57,12 +57,9 @@ class Queen {
             }
         })
 
-        // CHECK WHICH PIECES ARE IN THE WAY
-        const roadBlockUpRight = checkRoadblockDiagonalUpRight(pieces, oldRow, oldColumn)
-        if (roadBlockUpRight) {
-            possibleMovesFiltered = filterRoadBlockUpRight(possibleMovesFiltered, roadBlockUpRight, oldRow, oldColumn)
-        }
+        // CHECK WHICH PIECES ARE IN THE WAY and filter moves beyond them
         possibleMovesFiltered = checkStraightRoadblocks(pieces, possibleMovesFiltered, oldRow, oldColumn)
+        possibleMovesFiltered = checkDiagonalRoadblocks(pieces, possibleMovesFiltered, oldRow, oldColumn)
 
         //if move is possible, update position and return true
         let pieceCanMove = false;

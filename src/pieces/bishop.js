@@ -53,6 +53,9 @@ class Bishop {
         })
 
 
+        //filter moves that bo beyond thier roadblocks
+        possibleMovesFiltered = checkDiagonalRoadblocks(pieces, possibleMovesFiltered, oldRow, oldColumn)
+
         //if move is possible, update position and return true
         let pieceCanMove = false;
         possibleMovesFiltered.forEach(move => {
