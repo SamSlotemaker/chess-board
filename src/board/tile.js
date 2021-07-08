@@ -5,10 +5,7 @@ class Tile {
         this.column = y + 1
         this.x = this.size * x
         this.y = this.size * y
-    }
-
-    update() {
-
+        this.possibleMove = false;
     }
 
     //draw the tile
@@ -19,6 +16,7 @@ class Tile {
             if (isEven(this.row)) {
                 fill(101, 139, 111)
             } else {
+
                 fill(255)
             }
         } else {
@@ -29,6 +27,14 @@ class Tile {
             }
         }
         square(this.x, this.y, this.size)
+
+        if (this.possibleMove) {
+            //draw a litle circle in the middle of the square
+            fill(255, 40, 255)
+            translate(this.size / 2, this.size / 2)
+            circle(this.x, this.y, this.size / 2)
+            translate(-(this.size / 2), -(this.size / 2))
+        }
     }
 }
 

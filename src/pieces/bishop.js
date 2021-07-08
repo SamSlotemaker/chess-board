@@ -14,21 +14,12 @@ class Bishop {
         } else {
             this.img = bishopImg
         }
+        this.possibleMoves = []
     }
 
-    //check if piece can move
-    move(row, column) {
-        if (this.color !== turn) {
-            return false
-        }
-
+    checkPossibleMoves() {
         let oldRow = this.row
         let oldColumn = this.column
-
-        let newRow = row
-        let newColumn = column
-
-        console.log(`moving bishop from ${oldRow}|${oldColumn} to: ${newRow}|${newColumn}`)
 
         // all possible moves
         let startPosition = [oldRow, oldColumn]
@@ -56,9 +47,37 @@ class Bishop {
         //filter moves that bo beyond thier roadblocks
         possibleMovesFiltered = checkDiagonalRoadblocks(pieces, possibleMovesFiltered, oldRow, oldColumn)
 
+        //filter all moves that would capture own piece
+        possibleMovesFiltered = possibleMovesFiltered.filter(move => {
+            if (!wouldCaptureOwnPiece(pieces, oldRow, oldColumn, move[0], move[1])) {
+                return true;
+            }
+        })
+
+        this.possibleMoves = possibleMovesFiltered
+
+        this.possibleMoves.forEach(move => {
+            board[move[1]][move[0]].possibleMove = true
+        })
+    }
+
+    //check if piece can move
+    move(row, column) {
+        if (this.color !== turn) {
+            return false
+        }
+
+        let oldRow = this.row
+        let oldColumn = this.column
+
+        let newRow = row
+        let newColumn = column
+
+        console.log(`moving bishop from ${oldRow}|${oldColumn} to: ${newRow}|${newColumn}`)
+
         //if move is possible, update position and return true
         let pieceCanMove = false;
-        possibleMovesFiltered.forEach(move => {
+        this.possibleMoves.forEach(move => {
 
             //if a possible move is the same as the move that you're trying to do
             if (move[0] === newRow && move[1] === newColumn) {

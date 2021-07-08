@@ -150,6 +150,8 @@ function mousePressed(e) {
 
     //check if clicked tile has a piece on it
     if (typeof pieces[rowClicked][columnClicked] == 'object') {
+        //check possible moves when piece is clicked
+        pieces[rowClicked][columnClicked].checkPossibleMoves()
         locked = true
     } else {
         locked = false
@@ -190,6 +192,8 @@ function mouseReleased() {
         for (let i = 0; i < rows; i++) {
             //for each column
             for (let j = 0; j < columns; j++) {
+                //remove possible move colors 
+                board[i][j].possibleMove = false;
                 if (typeof pieces[i][j] == 'object') {
                     pieces[i][j].update(i, j)
                 }

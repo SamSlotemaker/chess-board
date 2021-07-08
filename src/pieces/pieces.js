@@ -156,7 +156,6 @@ function checkRoadblockDiagonalUpRight(pieces, oldRow, oldColumn) {
 }
 //check up left
 function checkRoadblockDiagonalUpLeft(pieces, oldRow, oldColumn) {
-    console.log(oldRow, oldColumn)
     for (let i = 1; i < rows; i++) {
         if (oldRow - i >= 0 && oldColumn - i >= 0)
             if (typeof pieces[oldRow - i][oldColumn - i] == 'object') {
