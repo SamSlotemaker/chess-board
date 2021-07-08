@@ -18,9 +18,9 @@ A chessboard with JavaScript and the p5.js library.
 
 * [X] Pawns can't move when piece is infront and need to capture diagonally 
 
-* [ ] Pieces can only move as far as the first object in thier way (except the horse)
+* [X] Pieces can only move as far as the first object in thier way (except the horse)
 * [X] ^ Horizontal & Vertical
-* [ ] ^ Diagonal
+* [X] ^ Diagonal
 
 * [ ] Castling move
 ### Capturing
@@ -34,6 +34,7 @@ A chessboard with JavaScript and the p5.js library.
 * [ ] Checkmate
 
 ### Information
+* [ ] Show Possible moves on the tiles
 * [ ] Made moves
 
 
