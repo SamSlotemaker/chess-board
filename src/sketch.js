@@ -216,6 +216,11 @@ function mouseReleased() {
                 //remove possible move colors 
                 board[i][j].possibleMove = false;
                 if (typeof pieces[i][j] == 'object') {
+
+                    if (getPieceName(pieces, [i, j]) == 'king') {
+                        pieces[i][j].isInCheck()
+                    }
+
                     pieces[i][j].update(i, j)
                 }
             }

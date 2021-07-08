@@ -127,7 +127,6 @@ function checkRoadblockLeft(pieces, oldRow, oldColumn) {
 // DIAGONALS
 //check down right
 function checkRoadblockDiagonalDownRight(pieces, oldRow, oldColumn) {
-    console.log(oldRow, oldColumn)
     for (let i = 1; i < rows; i++) {
         if (oldRow + i < 8 && oldColumn + i < 8)
             if (typeof pieces[oldRow + i][oldColumn + i] == 'object') {
@@ -236,4 +235,59 @@ function filterRoadBlockDownLeft(movesArray, roadBlock) {
             return true;
         }
     })
+}
+
+
+function getPieceName(pieces, position) {
+    if (position) {
+        const pieceName = pieces[position[0]][position[1]].constructor.name
+        return pieceName.toLowerCase()
+    } else {
+        return false
+    }
+}
+function getPieceColor(pieces, position) {
+    if (position) {
+        const pieceColor = pieces[position[0]][position[1]].color
+        return pieceColor
+    } else {
+        return false
+    }
+}
+
+function isOpposingRookOrQueen(pieces, piece, ownColor) {
+    const pieceName = getPieceName(pieces, piece)
+    const pieceColor = getPieceColor(pieces, piece)
+    if (pieceName == 'rook' || pieceName == 'queen') {
+        if (pieceColor != ownColor) {
+            return true
+        }
+    } else {
+        return false
+    }
+}
+
+function isOpposingBishopOrQueen(pieces, piece, ownColor) {
+    const pieceName = getPieceName(pieces, piece)
+    const pieceColor = getPieceColor(pieces, piece)
+
+    if (pieceName == 'bishop' || pieceName == 'queen') {
+        if (pieceColor != ownColor) {
+            return true
+        }
+    } else {
+        return false
+    }
+}
+
+function isOpposingHorse(pieces, piece, ownColor) {
+    const pieceName = getPieceName(pieces, piece)
+    const pieceColor = getPieceColor(pieces, piece)
+    if (pieceName == 'horse') {
+        if (pieceColor != ownColor) {
+            return true
+        }
+    } else {
+        return false
+    }
 }
