@@ -71,11 +71,11 @@ function setup() {
         }
     }
 
-    // //pawns
-    // for (let j = 0; j < columns; j++) {
-    //     pieces[1][j] = new Pawn(tileSize, 1, j, 'black')
-    //     pieces[6][j] = new Pawn(tileSize, 6, j, 'white')
-    // }
+    //pawns
+    for (let j = 0; j < columns; j++) {
+        pieces[1][j] = new Pawn(tileSize, 1, j, 'black')
+        pieces[6][j] = new Pawn(tileSize, 6, j, 'white')
+    }
 
     // rooks
     pieces[0][0] = new Rook(tileSize, 0, 0, 'black')
