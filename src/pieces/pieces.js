@@ -26,6 +26,40 @@ function wouldCaptureOwnPiece(pieces, oldRow, oldColumn, newRow, newColumn) {
     }
 }
 
+//check king spots 
+function checkKingSpots(row, column) {
+    let possibleMoves = []
+    //king can move 1 square in every direction
+    // horizonal + vertical
+    let possibleSpot1 = [row + 1, column]
+    let possibleSpot2 = [row, column + 1]
+    let possibleSpot3 = [row - 1, column]
+    let possibleSpot4 = [row, column - 1]
+    // diagonals
+    let possibleSpot5 = [row + 1, column + 1]
+    let possibleSpot6 = [row - 1, column - 1]
+    let possibleSpot7 = [row - 1, column + 1]
+    let possibleSpot8 = [row + 1, column - 1]
+    possibleMoves.push(...[possibleSpot1, possibleSpot2, possibleSpot3, possibleSpot4, possibleSpot5, possibleSpot6, possibleSpot7, possibleSpot8])
+    return possibleMoves
+}
+
+//check horse spots
+function checkHorseSpots(row, column) {
+    let possibleHorseSpots = []
+    //horse moves, approx +2 +1 in every direction
+    let possibleSpot1 = [row + 2, column + 1]
+    let possibleSpot2 = [row + 2, column - 1]
+    let possibleSpot3 = [row + 1, column + 2]
+    let possibleSpot4 = [row + 1, column - 2]
+    let possibleSpot5 = [row - 2, column - 1]
+    let possibleSpot6 = [row - 2, column + 1]
+    let possibleSpot7 = [row - 1, column - 2]
+    let possibleSpot8 = [row - 1, column + 2]
+
+    possibleHorseSpots.push(...[possibleSpot1, possibleSpot2, possibleSpot3, possibleSpot4, possibleSpot5, possibleSpot6, possibleSpot7, possibleSpot8])
+    return possibleHorseSpots
+}
 
 // Check if there are pieces in the way
 // check horizontals
@@ -291,3 +325,16 @@ function isOpposingHorse(pieces, piece, ownColor) {
         return false
     }
 }
+
+function isOpposingKing(pieces, piece, ownColor) {
+    const pieceName = getPieceName(pieces, piece)
+    const pieceColor = getPieceColor(pieces, piece)
+    if (pieceName == 'king') {
+        if (pieceColor != ownColor) {
+            return true
+        }
+    } else {
+        return false
+    }
+}
+

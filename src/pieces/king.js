@@ -25,19 +25,8 @@ class King {
 
         // all possible moves
         let startPosition = [oldRow, oldColumn]
-        let possibleMoves = []
 
-        //king can move 1 square in every direction
-        // horizonal + vertical
-        let possibleSpot1 = [startPosition[0] + 1, startPosition[1]]
-        let possibleSpot2 = [startPosition[0], startPosition[1] + 1]
-        let possibleSpot3 = [startPosition[0] - 1, startPosition[1]]
-        let possibleSpot4 = [startPosition[0], startPosition[1] - 1]
-        // diagonals
-        let possibleSpot5 = [startPosition[0] + 1, startPosition[1] + 1]
-        let possibleSpot6 = [startPosition[0] - 1, startPosition[1] - 1]
-        let possibleSpot7 = [startPosition[0] - 1, startPosition[1] + 1]
-        let possibleSpot8 = [startPosition[0] + 1, startPosition[1] - 1]
+        let possibleMoves = checkKingSpots(startPosition[0], startPosition[1])
 
         // king can move 2 squares to castle when it has not moved
         if (!this.hasMoved) {
@@ -61,7 +50,6 @@ class King {
         }
 
 
-        possibleMoves.push(...[possibleSpot1, possibleSpot2, possibleSpot3, possibleSpot4, possibleSpot5, possibleSpot6, possibleSpot7, possibleSpot8])
 
         // filter out all moves that go outside the board
         let possibleMovesFiltered = possibleMoves.filter(move => {
@@ -110,32 +98,37 @@ class King {
             check = true
         }
 
+        let possibleKingSpots = checkKingSpots(row, column)
+
         // check all horse moves 
         // all possible moves
-        let possibleHorseSpots = []
+        let possibleHorseSpots = checkHorseSpots(row, column)
 
-        //horse moves, approx +2 +1 in every direction
-        let possibleSpot1 = [row + 2, column + 1]
-        let possibleSpot2 = [row + 2, column - 1]
-        let possibleSpot3 = [row + 1, column + 2]
-        let possibleSpot4 = [row + 1, column - 2]
-        let possibleSpot5 = [row - 2, column - 1]
-        let possibleSpot6 = [row - 2, column + 1]
-        let possibleSpot7 = [row - 1, column - 2]
-        let possibleSpot8 = [row - 1, column + 2]
-
-        possibleHorseSpots.push(...[possibleSpot1, possibleSpot2, possibleSpot3, possibleSpot4, possibleSpot5, possibleSpot6, possibleSpot7, possibleSpot8])
         // filter out all moves that go outside the board
-        let possibleMovesFiltered = possibleHorseSpots.filter(move => {
+        let possibleHorseMovesFiltered = possibleHorseSpots.filter(move => {
             if (move[0] < 0 || move[1] < 0 || move[0] > 7 || move[1] > 7 || move == [this.row, this.column]) {
                 return false
             } else {
                 return true
             }
         })
-        possibleMovesFiltered.forEach(spot => {
+        possibleHorseMovesFiltered.forEach(spot => {
             if (isOpposingHorse(pieces, spot, this.color)) {
                 console.log('opposing horse found')
+                check = true
+            }
+        })
+
+        let possibleKingMovesFiltered = possibleKingSpots.filter(move => {
+            if (move[0] < 0 || move[1] < 0 || move[0] > 7 || move[1] > 7 || move == [this.row, this.column]) {
+                return false
+            } else {
+                return true
+            }
+        })
+        possibleKingMovesFiltered.forEach(spot => {
+            if (isOpposingKing(pieces, spot, this.color)) {
+                console.log('opposing king found')
                 check = true
             }
         })
