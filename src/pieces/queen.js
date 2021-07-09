@@ -74,9 +74,6 @@ class Queen {
             return false
         }
 
-        let oldRow = this.row
-        let oldColumn = this.column
-
         let newRow = row
         let newColumn = column
 

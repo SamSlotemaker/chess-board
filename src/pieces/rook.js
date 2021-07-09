@@ -15,6 +15,7 @@ class Rook {
             this.img = rookImg
         }
         this.possibleMoves = []
+        this.hasMoved = false
     }
 
     checkPossibleMoves() {

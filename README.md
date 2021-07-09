@@ -22,7 +22,8 @@ A chessboard with JavaScript and the p5.js library.
 * [X] ^ Horizontal & Vertical
 * [X] ^ Diagonal
 
-* [ ] Castling move
+* [X] Castling move
+
 ### Capturing
 * [X]  Capturing pieces
 * [X] Pieces can only capture the other color

@@ -15,6 +15,7 @@ class King {
             this.img = kingImg
         }
         this.possibleMoves = []
+        this.hasMoved = false
 
     }
 
@@ -37,6 +38,28 @@ class King {
         let possibleSpot6 = [startPosition[0] - 1, startPosition[1] - 1]
         let possibleSpot7 = [startPosition[0] - 1, startPosition[1] + 1]
         let possibleSpot8 = [startPosition[0] + 1, startPosition[1] - 1]
+
+        // king can move 2 squares to castle when it has not moved
+        if (!this.hasMoved) {
+            //only add it when the corresponding rook has not moved yet
+            //castle left
+            if (typeof pieces[startPosition[0]][0] == 'object' && !pieces[startPosition[0]][0].hasMoved) {
+                let castleSpot = [startPosition[0], startPosition[1] - 2]
+                //to castle, there can't be a piece between king and rook
+                if (typeof pieces[startPosition[0]][1] != 'object' && typeof pieces[startPosition[0]][2] != 'object' && typeof pieces[startPosition[0]][3] != 'object') {
+                    possibleMoves.push(castleSpot)
+                }
+            }
+            //castle right
+            if (typeof pieces[startPosition[0]][7] == 'object' && !pieces[startPosition[0]][7].hasMoved) {
+                let castleSpot = [startPosition[0], startPosition[1] + 2]
+                //to castle, there can't be a piece between king and rook
+                if (typeof pieces[startPosition[0]][5] != 'object' && typeof pieces[startPosition[0]][6] != 'object') {
+                    possibleMoves.push(castleSpot)
+                }
+            }
+        }
+
 
         possibleMoves.push(...[possibleSpot1, possibleSpot2, possibleSpot3, possibleSpot4, possibleSpot5, possibleSpot6, possibleSpot7, possibleSpot8])
 
@@ -68,7 +91,6 @@ class King {
         //check for knight moves
         const row = i
         const column = j
-        console.log(i, j)
 
         const roadblockDown = checkRoadblockDown(pieces, row, column)
         const roadblockUp = checkRoadblockUp(pieces, row, column)
@@ -125,9 +147,6 @@ class King {
         if (this.color !== turn) {
             return false
         }
-
-        let oldRow = this.row
-        let oldColumn = this.column
 
         let newRow = row
         let newColumn = column

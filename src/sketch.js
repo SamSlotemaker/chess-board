@@ -1,5 +1,6 @@
 //global values
 const turnElement = document.getElementById('turn')
+const turnInfo = document.getElementById('turn-info')
 const boardSize = 600
 let columns = 8
 let rows = 8
@@ -70,11 +71,11 @@ function setup() {
         }
     }
 
-    //pawns
-    for (let j = 0; j < columns; j++) {
-        pieces[1][j] = new Pawn(tileSize, 1, j, 'black')
-        pieces[6][j] = new Pawn(tileSize, 6, j, 'white')
-    }
+    // //pawns
+    // for (let j = 0; j < columns; j++) {
+    //     pieces[1][j] = new Pawn(tileSize, 1, j, 'black')
+    //     pieces[6][j] = new Pawn(tileSize, 6, j, 'white')
+    // }
 
     // rooks
     pieces[0][0] = new Rook(tileSize, 0, 0, 'black')
@@ -197,7 +198,6 @@ function mouseReleased() {
             //swap places in array with moved piece
 
             const oldPiece = pieces[rowReleased][columnReleased]
-            console.log(oldPiece)
             const movedPiece = pieces[rowClicked][columnClicked]
             pieces[rowReleased][columnReleased] = pieces[rowClicked][columnClicked]
             pieces[rowClicked][columnClicked] = ''
@@ -205,16 +205,34 @@ function mouseReleased() {
             const movedColor = movedPiece.color
             let setCheck = false
 
-            console.log(pieces)
+            // if a king moves 2 squares, it needs to be castled
+            if (movedPiece.constructor.name.toLowerCase() == 'king') {
+                if (columnReleased == columnClicked - 2 && rowClicked === rowReleased && !movedPiece.hasMoved) {
+                    console.log('castle links')
+                    //add rook to new place
+                    pieces[rowReleased][columnReleased + 1] = pieces[rowReleased][0]
+                    pieces[rowReleased][0] = ''
+
+                    pieces[rowReleased][columnReleased + 1].column = columnReleased + 1
+                } else if (columnReleased == columnClicked + 2 && rowClicked === rowReleased && !movedPiece.hasMoved) {
+                    console.log('castle rechts');
+                    //add rook to new place
+                    pieces[rowReleased][columnReleased - 1] = pieces[rowReleased][7]
+                    pieces[rowReleased][7] = ''
+
+                    pieces[rowReleased][columnReleased - 1].column = columnReleased - 1
+                }
+            }
+
             for (let i = 0; i < rows; i++) {
                 //for each column
                 for (let j = 0; j < columns; j++) {
 
-                    //log when a king is in check
+
+                    //check if a king is in check
                     if (getPieceName(pieces, [i, j]) == 'king') {
-                        console.log(`${pieces[i][j].color} found at ${i}, ${j}`)
                         if (pieces[i][j].isInCheck(i, j)) {
-                            console.log(pieces[i][j].color + ' king is in check')
+
                         }
                     }
 
@@ -223,6 +241,7 @@ function mouseReleased() {
                         //if he puts himself in check
                         if (pieces[i][j].isInCheck(i, j)) {
                             console.log(movedColor + ' put himself in check')
+                            turnInfo.textContent = 'You cant put yourself in check'
                             //reset moves because you can't put yourself in check
                             pieces[rowClicked][columnClicked] = movedPiece
                             pieces[rowReleased][columnReleased] = oldPiece
@@ -233,9 +252,17 @@ function mouseReleased() {
             }
 
             if (!setCheck) {
+                turnInfo.textContent = ''
                 //update new position
                 pieces[rowReleased][columnReleased].row = rowReleased
                 pieces[rowReleased][columnReleased].column = columnReleased
+
+                //if the moved piece is either king or rook, set it's state to moved, so it cant castle anymore
+                if (getPieceName(pieces, [rowReleased, columnReleased]) == 'king' || getPieceName(pieces, [rowReleased, columnReleased]) == 'rook') {
+                    pieces[rowReleased][columnReleased].hasMoved = true;
+                }
+
+
 
                 //swap turns
                 if (movedPiece.color == 'white') {
