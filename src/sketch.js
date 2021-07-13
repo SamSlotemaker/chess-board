@@ -196,14 +196,12 @@ function mouseReleased() {
 
         if (pieceCanMove) {
             //swap places in array with moved piece
-
             const oldPiece = pieces[rowReleased][columnReleased]
             const movedPiece = pieces[rowClicked][columnClicked]
             pieces[rowReleased][columnReleased] = pieces[rowClicked][columnClicked]
             pieces[rowClicked][columnClicked] = ''
 
             const movedColor = movedPiece.color
-            let setCheck = false
 
             // if a king moves 2 squares, it needs to be castled
             if (movedPiece.constructor.name.toLowerCase() == 'king') {
@@ -222,95 +220,90 @@ function mouseReleased() {
                 }
             }
 
+
+            //remove other enpassants of your color. because it's only available 1 turn
             for (let i = 0; i < rows; i++) {
                 //for each column
                 for (let j = 0; j < columns; j++) {
+                    if (getPieceName(pieces, [i, j]) == 'pawn' && pieces[i][j].color == movedColor) {
+                        pieces[i][j].enpassant = false
+                    }
+                }
+            }
+            //check if a pawn moves
+            if (getPieceName(pieces, [rowReleased, columnReleased]) == 'pawn') {
+                //check if it moved 2 places to enable an an passant capture
+                if (rowReleased - movedPiece.row == 2 || rowReleased - movedPiece.row == -2) {
+                    movedPiece.enpassant = true;
+                }
 
-
-                    //find the king with the same color as the player thats moving
-                    if (getPieceName(pieces, [i, j]) == 'king' && pieces[i][j].color == movedColor) {
-                        let king = pieces[i][j]
-                        //if he puts himself in check
-                        if (canBeTakenBy(king, i, j).length > 0) {
-                            console.log(movedColor + ' put himself in check')
-                            turnInfo.textContent = 'You cant put yourself in check'
-                            //reset moves because you can't put yourself in check
-                            pieces[rowClicked][columnClicked] = movedPiece
-                            pieces[rowReleased][columnReleased] = oldPiece
-                            setCheck = true;
+                //check if an enpassent has been made: column doesn't match but no piece captured
+                if (typeof oldPiece != 'object' && movedPiece.column != columnReleased) {
+                    //remove the piece that is captured en passant by checking which was was able to.
+                    for (let i = 0; i < rows; i++) {
+                        for (let j = 0; j < columns; j++) {
+                            console.log(pieces[i][j])
+                            if (pieces[i][j].enpassant) {
+                                console.log('found one')
+                                pieces[i][j] = ''
+                            }
                         }
                     }
                 }
             }
 
-            if (!setCheck) {
-                turnInfo.textContent = ''
-                //update new position
-                pieces[rowReleased][columnReleased].row = rowReleased
-                pieces[rowReleased][columnReleased].column = columnReleased
+            turnInfo.textContent = ''
+            //update new position
+            pieces[rowReleased][columnReleased].row = rowReleased
+            pieces[rowReleased][columnReleased].column = columnReleased
 
-                //if the moved piece is either king or rook, set it's state to moved, so it cant castle anymore
-                if (getPieceName(pieces, [rowReleased, columnReleased]) == 'king' || getPieceName(pieces, [rowReleased, columnReleased]) == 'rook') {
-                    pieces[rowReleased][columnReleased].hasMoved = true;
-                }
+            //if the moved piece is either king or rook, set it's state to moved, so it cant castle anymore
+            if (getPieceName(pieces, [rowReleased, columnReleased]) == 'king' || getPieceName(pieces, [rowReleased, columnReleased]) == 'rook') {
+                pieces[rowReleased][columnReleased].hasMoved = true;
+            }
 
-                // CHECK FOR CHECKMATE
-                for (let i = 0; i < rows; i++) {
-                    //for each column
-                    for (let j = 0; j < columns; j++) {
-                        //check if the other king is in check
-                        if (getPieceName(pieces, [i, j]) == 'king' && pieces[i][j].color != movedColor) {
-                            let king = pieces[i][j]
+            // CHECK FOR CHECKMATE
+            for (let i = 0; i < rows; i++) {
+                //for each column
+                for (let j = 0; j < columns; j++) {
+                    //check if the other king is in check
+                    if (getPieceName(pieces, [i, j]) == 'king' && pieces[i][j].color != movedColor) {
+                        let king = pieces[i][j]
 
-                            let checkingPieces = canBeTakenBy(king, i, j)
-                            //if a king is put in check
-                            if (checkingPieces.length > 0) {
-                                console.log(king.color + ' is in check')
+                        let checkingPieces = canBeTakenBy(king, i, j)
+                        //if a king is put in check
+                        if (checkingPieces.length > 0) {
+                            console.log(king.color + ' is in check')
 
-                                //for each possible move, check if the king could move there
-                                let kingCanMove = true;
-                                king.checkPossibleMoves()
-
-                                king.possibleMoves.forEach(move => {
-                                    let row = move[0]
-                                    let column = move[1]
-                                    if (canBeTakenBy(king, row, column).length > 0) {
-                                        console.log('king cant move to this square')
-                                        kingCanMove = false;
-                                    }
-                                })
-
-
-                                let pieceCanBlock = false
-                                //check if another piece can block the king, only if 1 piece is checking and is no horse or pawn (those cant be blocked)
-                                for (let i = 0; i < rows; i++) {
-                                    //for each column
-                                    for (let j = 0; j < columns; j++) {
-                                        let piece = pieces[i][j]
-                                        if (typeof piece == 'object' && piece.color == king.color) {
-                                            piece.checkPossibleMoves()
-                                            if (piece.possibleMoves.length > 0) {
-                                                console.log(piece.possibleMoves)
-                                                console.log(piece)
-                                                pieceCanBlock = true;
-                                            }
+                            let pieceCanBlock = false
+                            //check if another piece can block the king, only if 1 piece is checking and is no horse or pawn (those cant be blocked)
+                            for (let i = 0; i < rows; i++) {
+                                //for each column
+                                for (let j = 0; j < columns; j++) {
+                                    let piece = pieces[i][j]
+                                    if (typeof piece == 'object' && piece.color == king.color) {
+                                        piece.checkPossibleMoves()
+                                        if (piece.possibleMoves.length > 0) {
+                                            console.log(piece.possibleMoves)
+                                            console.log(piece)
+                                            pieceCanBlock = true;
                                         }
                                     }
                                 }
-                                if (!pieceCanBlock) {
-                                    turnInfo.textContent = 'Checkmate.'
-                                }
+                            }
+                            if (!pieceCanBlock) {
+                                turnInfo.textContent = 'Checkmate.'
                             }
                         }
                     }
                 }
+            }
 
-                //swap turns
-                if (movedPiece.color == 'white') {
-                    turn = 'black'
-                } else {
-                    turn = 'white'
-                }
+            //swap turns
+            if (movedPiece.color == 'white') {
+                turn = 'black'
+            } else {
+                turn = 'white'
             }
 
             if (turnElement) {

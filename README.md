@@ -27,7 +27,7 @@ A chessboard with JavaScript and the p5.js library.
 ### Capturing
 * [X]  Capturing pieces
 * [X] Pieces can only capture the other color
-* [ ] En Passant capturing
+* [X] En Passant capturing
 
   
 ### Mating

@@ -7,6 +7,7 @@ class Pawn {
         this.x = this.tileSize * x
         this.y = this.tileSize * y
         this.color = color
+        this.enpassant = false;
 
         this.img
         if (this.color == 'white') {
@@ -52,6 +53,18 @@ class Pawn {
                 possibleMoves.push([startPosition[0] - 1, startPosition[1] + 1])
             }
 
+            //add enpassant spots when available
+            if (typeof pieces[startPosition[0]][startPosition[1] - 1] == 'object') {
+                if (pieces[startPosition[0]][startPosition[1] - 1].enpassant) {
+                    possibleMoves.push([startPosition[0] - 1, startPosition[1] - 1])
+                }
+            }
+            if (typeof pieces[startPosition[0]][startPosition[1] + 1] == 'object') {
+                if (pieces[startPosition[0]][startPosition[1] + 1].enpassant) {
+                    possibleMoves.push([startPosition[0] - 1, startPosition[1] + 1])
+                }
+            }
+
 
         } else {
             let possibleSpot1 = [startPosition[0] + 1, startPosition[1]]
@@ -74,6 +87,18 @@ class Pawn {
             }
             if (typeof pieces[startPosition[0] + 1][startPosition[1] + 1] == 'object') {
                 possibleMoves.push([startPosition[0] + 1, startPosition[1] + 1])
+            }
+
+            //add enpassant spots when available
+            if (typeof pieces[startPosition[0]][startPosition[1] - 1] == 'object') {
+                if (pieces[startPosition[0]][startPosition[1] - 1].enpassant) {
+                    possibleMoves.push([startPosition[0] + 1, startPosition[1] - 1])
+                }
+            }
+            if (typeof pieces[startPosition[0]][startPosition[1] + 1] == 'object') {
+                if (pieces[startPosition[0]][startPosition[1] + 1].enpassant) {
+                    possibleMoves.push([startPosition[0] + 1, startPosition[1] + 1])
+                }
             }
         }
 
