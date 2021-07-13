@@ -254,6 +254,7 @@ function mouseReleased() {
                     pieces[rowReleased][columnReleased].hasMoved = true;
                 }
 
+                // CHECK FOR CHECKMATE
                 for (let i = 0; i < rows; i++) {
                     //for each column
                     for (let j = 0; j < columns; j++) {
@@ -261,8 +262,9 @@ function mouseReleased() {
                         if (getPieceName(pieces, [i, j]) == 'king' && pieces[i][j].color != movedColor) {
                             let king = pieces[i][j]
 
+                            let checkingPieces = canBeTakenBy(king, i, j)
                             //if a king is put in check
-                            if (canBeTakenBy(king, i, j).length > 0) {
+                            if (checkingPieces.length > 0) {
                                 console.log(king.color + ' is in check')
 
                                 //for each possible move, check if the king could move there
@@ -270,7 +272,6 @@ function mouseReleased() {
                                 king.checkPossibleMoves()
 
                                 king.possibleMoves.forEach(move => {
-
                                     let row = move[0]
                                     let column = move[1]
                                     if (canBeTakenBy(king, row, column).length > 0) {
@@ -281,13 +282,28 @@ function mouseReleased() {
 
                                 //for each piece that has been checked, check if it can be taken by one of your pieces
                                 let checkingPiecesCanBeTaken = false;
-                                canBeTakenBy(king, i, j).forEach(piece => {
+                                checkingPieces.forEach(piece => {
                                     console.log(`checking ${piece} at ${piece.row} ${piece.column}`)
                                     if (canBeTakenBy(piece, piece.row, piece.column).length > 0) {
                                         console.log('can be taken')
                                         checkingPiecesCanBeTaken = true;
                                     }
                                 })
+
+                                //check if another piece can block the king, only if 1 piece is checking and is no horse or pawn (those cant be blocked)
+                                checkingPiece = getPieceName(pieces, [checkingPieces[0].row, checkingPieces[0].column])
+                                if (checkingPieces.length == 1 && checkingPiece != 'horse' && checkingPiece != 'pawn') {
+
+                                    //piece is below king
+                                    if (king.row < checkingPiece.row) {
+
+                                    } else {
+                                        //piece is above king
+                                    }
+
+
+                                }
+
                                 if (!kingCanMove && !checkingPiecesCanBeTaken) {
                                     console.log('checkmate')
                                 }
@@ -316,9 +332,6 @@ function mouseReleased() {
                 //remove possible move colors 
                 board[i][j].possibleMove = false;
                 if (typeof pieces[i][j] == 'object') {
-                    // if (getPieceName(pieces, [i, j]) == 'king') {
-                    //     pieces[i][j].isInCheck()
-                    // }
                     pieces[i][j].update(i, j)
                 }
             }
