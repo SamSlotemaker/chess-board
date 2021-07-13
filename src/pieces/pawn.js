@@ -18,7 +18,6 @@ class Pawn {
     }
 
     checkPossibleMoves() {
-
         let oldRow = this.row
         let oldColumn = this.column
 
@@ -95,38 +94,7 @@ class Pawn {
             }
         })
 
-        //check if a move would check yourself
-        let yourKing;
-        for (let i = 0; i < rows; i++) {
-            //for each column
-            for (let j = 0; j < columns; j++) {
-                if (getPieceName(pieces, [i, j]) == 'king' && pieces[i][j].color == this.color) {
-                    yourKing = pieces[i][j]
-                }
-            }
-        }
-
-        //filter moves to moves that wont put you in check
-        let possibleMovesFinal = possibleMovesFiltered.filter(move => {
-            const oldPiece = pieces[this.row][this.column]
-            const movedPiece = pieces[move[0]][move[1]]
-
-            //update board, check it and then reset it
-            pieces[move[0]][move[1]] = ''
-            pieces[move[0]][move[1]] = pieces[this.row][this.column]
-
-            let canMoveHere = false;
-
-            if (canBeTakenBy(yourKing, yourKing.row, yourKing.column).length == 0) {
-                console.log('valid move: ' + move)
-                canMoveHere = true;
-            }
-            //reset moves after filtering
-            pieces[move[0]][move[1]] = movedPiece
-            pieces[this.row][this.column] = oldPiece
-
-            return canMoveHere
-        })
+        let possibleMovesFinal = filterCheckingMoves(possibleMovesFiltered, this.color, this.row, this.column)
 
         this.possibleMoves = possibleMovesFinal
 

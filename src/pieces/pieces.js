@@ -461,7 +461,49 @@ function canBeTakenBy(piece, i, j) {
             piecesThatCanTake.push(pieces[spot[0]][spot[1]])
         }
     })
-
     return piecesThatCanTake
+}
+
+function filterCheckingMoves(possibleMoves, color, row, column) {
+    //check if a move would check yourself
+    let yourKing;
+    for (let i = 0; i < rows; i++) {
+        //for each column
+        for (let j = 0; j < columns; j++) {
+            if (getPieceName(pieces, [i, j]) == 'king' && pieces[i][j].color == color) {
+                yourKing = pieces[i][j]
+            }
+        }
+    }
+
+    //filter moves to moves that wont put you in check
+    let possibleMovesFiiltered = possibleMoves.filter(move => {
+        const oldPiece = pieces[row][column]
+        const movedPiece = pieces[move[0]][move[1]]
+
+        //update board, check it and then reset it
+        //update:
+        pieces[move[0]][move[1]] = pieces[row][column]
+        pieces[row][column] = ''
+
+        pieces[move[0]][move[1]].row = move[0]
+        pieces[move[0]][move[1]].column = move[1]
+        let canMoveHere = false;
+
+        //if king cant be taken in current board positions, allow the move
+        if (canBeTakenBy(yourKing, yourKing.row, yourKing.column).length == 0) {
+            canMoveHere = true;
+        }
+
+        //reset:
+        pieces[move[0]][move[1]] = movedPiece
+        pieces[row][column] = oldPiece
+
+        pieces[row][column].row = row
+        pieces[row][column].column = column
+
+        return canMoveHere
+    })
+    return possibleMovesFiiltered
 }
 

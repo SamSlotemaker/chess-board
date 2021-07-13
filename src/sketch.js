@@ -280,32 +280,25 @@ function mouseReleased() {
                                     }
                                 })
 
-                                //for each piece that has been checked, check if it can be taken by one of your pieces
-                                let checkingPiecesCanBeTaken = false;
-                                checkingPieces.forEach(piece => {
-                                    console.log(`checking ${piece} at ${piece.row} ${piece.column}`)
-                                    if (canBeTakenBy(piece, piece.row, piece.column).length > 0) {
-                                        console.log('can be taken')
-                                        checkingPiecesCanBeTaken = true;
-                                    }
-                                })
 
+                                let pieceCanBlock = false
                                 //check if another piece can block the king, only if 1 piece is checking and is no horse or pawn (those cant be blocked)
-                                checkingPiece = getPieceName(pieces, [checkingPieces[0].row, checkingPieces[0].column])
-                                if (checkingPieces.length == 1 && checkingPiece != 'horse' && checkingPiece != 'pawn') {
-
-                                    //piece is below king
-                                    if (king.row < checkingPiece.row) {
-
-                                    } else {
-                                        //piece is above king
+                                for (let i = 0; i < rows; i++) {
+                                    //for each column
+                                    for (let j = 0; j < columns; j++) {
+                                        let piece = pieces[i][j]
+                                        if (typeof piece == 'object' && piece.color == king.color) {
+                                            piece.checkPossibleMoves()
+                                            if (piece.possibleMoves.length > 0) {
+                                                console.log(piece.possibleMoves)
+                                                console.log(piece)
+                                                pieceCanBlock = true;
+                                            }
+                                        }
                                     }
-
-
                                 }
-
-                                if (!kingCanMove && !checkingPiecesCanBeTaken) {
-                                    console.log('checkmate')
+                                if (!pieceCanBlock) {
+                                    turnInfo.textContent = 'Checkmate.'
                                 }
                             }
                         }

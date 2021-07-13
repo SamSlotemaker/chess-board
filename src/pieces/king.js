@@ -66,8 +66,9 @@ class King {
                 return true;
             }
         })
+        let possibleMovesFinal = filterCheckingMoves(possibleMovesFiltered, this.color, this.row, this.column)
 
-        this.possibleMoves = possibleMovesFiltered
+        this.possibleMoves = possibleMovesFinal
 
         this.possibleMoves.forEach(move => {
             board[move[1]][move[0]].possibleMove = true
