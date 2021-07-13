@@ -16,6 +16,17 @@ document.addEventListener('contextmenu', (event) => {
 
 
 //board
+let boardNotation = [
+    ['A8', 'B8', 'C8', 'D8', 'E8', 'F8', 'G8', 'H8'],
+    ['A7', 'B7', 'C7', 'D7', 'E7', 'F7', 'G7', 'H7'],
+    ['A6', 'B6', 'C6', 'D6', 'E6', 'F6', 'G6', 'H6'],
+    ['A5', 'B5', 'C5', 'D5', 'E5', 'F5', 'G5', 'H5'],
+    ['A4', 'B4', 'C4', 'D4', 'E4', 'F4', 'G4', 'H4'],
+    ['A3', 'B3', 'C3', 'D3', 'E3', 'F3', 'G3', 'H3'],
+    ['A2', 'B2', 'C2', 'D2', 'E2', 'F2', 'G2', 'H2'],
+    ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1'],
+]
+
 let board = [
     ['', '', '', '', '', '', '', ''],
     ['', '', '', '', '', '', '', ''],
@@ -26,6 +37,8 @@ let board = [
     ['', '', '', '', '', '', '', ''],
     ['', '', '', '', '', '', '', ''],
 ]
+
+//board
 
 let pieces = [
     ['', '', '', '', '', '', '', ''],
@@ -104,15 +117,11 @@ function setup() {
     pieces[7][4] = new King(tileSize, 7, 4, 'white')
 }
 
-let runOnce = true
-
 //draws runs constantly
 function draw() {
 
     //draw tiles
-    //for each row
     for (let i = 0; i < rows; i++) {
-        //for each column
         for (let j = 0; j < columns; j++) {
             board[i][j].show()
         }
@@ -120,7 +129,6 @@ function draw() {
 
     // draw all pieces
     for (let i = 0; i < rows; i++) {
-        //for each column
         for (let j = 0; j < columns; j++) {
             if (typeof pieces[i][j] == 'object') {
                 pieces[i][j].show()
@@ -139,17 +147,14 @@ function draw() {
             cursor()
         }
     }
-
 }
 
 let columnClicked
 let rowClicked
 let locked = false;
-
 //update column/row clicked on mousepress
 function mousePressed(e) {
-
-    //if mouse has already been pressed, reset the piece
+    //if mouse has already been pressed, reset the piece by updating again
     if (locked) {
         for (let i = 0; i < rows; i++) {
             //for each column
@@ -168,14 +173,13 @@ function mousePressed(e) {
     rowClicked = Math.floor(mouseY / tileSize)
 
     //check if clicked tile has a piece on it
-    if (typeof pieces[rowClicked][columnClicked] == 'object') {
+    if (isPiece(pieces, rowClicked, columnClicked)) {
         //check possible moves when piece is clicked
         pieces[rowClicked][columnClicked].checkPossibleMoves()
         locked = true
     } else {
         locked = false
     }
-
 }
 
 //drag piece by updating position
@@ -242,9 +246,7 @@ function mouseReleased() {
                     //remove the piece that is captured en passant by checking which was was able to.
                     for (let i = 0; i < rows; i++) {
                         for (let j = 0; j < columns; j++) {
-                            console.log(pieces[i][j])
                             if (pieces[i][j].enpassant) {
-                                console.log('found one')
                                 pieces[i][j] = ''
                             }
                         }
@@ -273,8 +275,6 @@ function mouseReleased() {
                         let checkingPieces = canBeTakenBy(king, i, j)
                         //if a king is put in check
                         if (checkingPieces.length > 0) {
-                            console.log(king.color + ' is in check')
-
                             let pieceCanBlock = false
                             //check if another piece can block the king, only if 1 piece is checking and is no horse or pawn (those cant be blocked)
                             for (let i = 0; i < rows; i++) {
@@ -284,8 +284,6 @@ function mouseReleased() {
                                     if (typeof piece == 'object' && piece.color == king.color) {
                                         piece.checkPossibleMoves()
                                         if (piece.possibleMoves.length > 0) {
-                                            console.log(piece.possibleMoves)
-                                            console.log(piece)
                                             pieceCanBlock = true;
                                         }
                                     }

@@ -17,6 +17,15 @@ Object.prototype.show = function () {
     image(this.img, this.x, this.y, this.size, this.size)
 }
 
+
+function isPiece(pieces, row, column) {
+    if (typeof pieces[row][column] == 'object') {
+        return true
+    } else {
+        return false
+    }
+}
+
 //check if piece would capture own color
 function wouldCaptureOwnPiece(pieces, oldRow, oldColumn, newRow, newColumn) {
     if (pieces[newRow][newColumn].color == pieces[oldRow][oldColumn].color) {
@@ -443,21 +452,18 @@ function canBeTakenBy(piece, i, j) {
 
     possiblePawnMovesFiltered.forEach(spot => {
         if (isOpposingPawn(pieces, spot, piece.color)) {
-            console.log('opposing pawn found')
             piecesThatCanTake.push(pieces[spot[0]][spot[1]])
         }
     })
 
     possibleHorseMovesFiltered.forEach(spot => {
         if (isOpposingHorse(pieces, spot, piece.color)) {
-            console.log('opposing horse found')
             piecesThatCanTake.push(pieces[spot[0]][spot[1]])
         }
     })
 
     possibleKingMovesFiltered.forEach(spot => {
         if (isOpposingKing(pieces, spot, piece.color)) {
-            console.log('opposing king found')
             piecesThatCanTake.push(pieces[spot[0]][spot[1]])
         }
     })
