@@ -228,18 +228,16 @@ function mouseReleased() {
                     //check if a king is in check
                     if (getPieceName(pieces, [i, j]) == 'king') {
                         let king = pieces[i][j]
-                        console.log(i, j)
-                        if (canBeTaken(king, i, j)) {
+                        if (canBeTakenBy(king, i, j).length > 0) {
                             console.log(king.color + ' is in check')
                         }
                     }
 
                     //find the king with the same color as the player thats moving
                     if (getPieceName(pieces, [i, j]) == 'king' && pieces[i][j].color == movedColor) {
-                        console.log(i, j)
                         let king = pieces[i][j]
                         //if he puts himself in check
-                        if (canBeTaken(king, i, j)) {
+                        if (canBeTakenBy(king, i, j).length > 0) {
                             console.log(movedColor + ' put himself in check')
                             turnInfo.textContent = 'You cant put yourself in check'
                             //reset moves because you can't put yourself in check

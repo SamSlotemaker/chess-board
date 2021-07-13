@@ -366,7 +366,7 @@ function isOpposingKing(pieces, piece, ownColor) {
 }
 
 // check if piece can be taken
-function canBeTaken(piece, i, j) {
+function canBeTakenBy(piece, i, j) {
     //check every roadblock, if corresponding roadblocks are checking pieces. 
     //check for knight moves
     const row = i
@@ -386,22 +386,36 @@ function canBeTaken(piece, i, j) {
 
     let canTake = false;
 
-
-    if (isOpposingRookOrQueen(pieces, roadblockUp, piece.color) || isOpposingRookOrQueen(pieces, roadblockDown, piece.color) || isOpposingRookOrQueen(pieces, roadblockLeft, piece.color) || isOpposingRookOrQueen(pieces, roadblockRight, piece.color)) {
-        canTake = true
+    if (isOpposingRookOrQueen(pieces, roadblockUp, piece.color)) {
+        piecesThatCanTake.push(pieces[roadblockUp[0]][roadblockUp[1]])
     }
-    if (isOpposingBishopOrQueen(pieces, roadblockUpRight, piece.color) || isOpposingBishopOrQueen(pieces, roadblockUpLeft, piece.color) || isOpposingBishopOrQueen(pieces, roadblockDownRight, piece.color) || isOpposingBishopOrQueen(pieces, roadblockDownLeft, piece.color)) {
-        canTake = true
+    if (isOpposingRookOrQueen(pieces, roadblockDown, piece.color)) {
+        piecesThatCanTake.push(pieces[roadblockDown[0]][roadblockDown[1]])
+    }
+    if (isOpposingRookOrQueen(pieces, roadblockLeft, piece.color)) {
+        piecesThatCanTake.push(pieces[roadblockLeft[0]][roadblockLeft[1]])
+    }
+    if (isOpposingRookOrQueen(pieces, roadblockRight, piece.color)) {
+        piecesThatCanTake.push(pieces[roadblockRight[0]][roadblockRight[1]])
+    }
+
+    if (isOpposingBishopOrQueen(pieces, roadblockUpRight, piece.color)) {
+        piecesThatCanTake.push(pieces[roadblockUpRight[0]][roadblockUpRight[1]])
+    }
+    if (isOpposingBishopOrQueen(pieces, roadblockUpLeft, piece.color)) {
+        piecesThatCanTake.push(pieces[roadblockUpLeft[0]][roadblockUpLeft[1]])
+    }
+    if (isOpposingBishopOrQueen(pieces, roadblockDownRight, piece.color)) {
+        piecesThatCanTake.push(pieces[roadblockDownRight[0]][roadblockDownRight[1]])
+    }
+    if (isOpposingBishopOrQueen(pieces, roadblockDownLeft, piece.color)) {
+        piecesThatCanTake.push(pieces[roadblockDownLeft[0]][roadblockDownLeft[1]])
     }
 
     // one move spots where pieces can be that can take the king
     let possibleKingSpots = checkKingSpots(row, column)
     let possiblePawnSpots = checkPawnSpots(piece, row, column)
     let possibleHorseSpots = checkHorseSpots(row, column)
-
-
-
-
 
     // filter out all moves that go outside the board
     let possibleHorseMovesFiltered = possibleHorseSpots.filter(move => {
@@ -431,23 +445,24 @@ function canBeTaken(piece, i, j) {
     possiblePawnMovesFiltered.forEach(spot => {
         if (isOpposingPawn(pieces, spot, piece.color)) {
             console.log('opposing pawn found')
-            canTake = true
+            piecesThatCanTake.push(pieces[spot[0]][spot[1]])
         }
     })
 
     possibleHorseMovesFiltered.forEach(spot => {
         if (isOpposingHorse(pieces, spot, piece.color)) {
             console.log('opposing horse found')
-            canTake = true
+            piecesThatCanTake.push(pieces[spot[0]][spot[1]])
         }
     })
 
     possibleKingMovesFiltered.forEach(spot => {
         if (isOpposingKing(pieces, spot, piece.color)) {
             console.log('opposing king found')
-            canTake = true
+            piecesThatCanTake.push(pieces[spot[0]][spot[1]])
         }
     })
-    return canTake
+
+    return piecesThatCanTake
 }
 
