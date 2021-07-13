@@ -225,13 +225,7 @@ function mouseReleased() {
             for (let i = 0; i < rows; i++) {
                 //for each column
                 for (let j = 0; j < columns; j++) {
-                    //check if a king is in check
-                    if (getPieceName(pieces, [i, j]) == 'king') {
-                        let king = pieces[i][j]
-                        if (canBeTakenBy(king, i, j).length > 0) {
-                            console.log(king.color + ' is in check')
-                        }
-                    }
+
 
                     //find the king with the same color as the player thats moving
                     if (getPieceName(pieces, [i, j]) == 'king' && pieces[i][j].color == movedColor) {
@@ -260,7 +254,47 @@ function mouseReleased() {
                     pieces[rowReleased][columnReleased].hasMoved = true;
                 }
 
+                for (let i = 0; i < rows; i++) {
+                    //for each column
+                    for (let j = 0; j < columns; j++) {
+                        //check if the other king is in check
+                        if (getPieceName(pieces, [i, j]) == 'king' && pieces[i][j].color != movedColor) {
+                            let king = pieces[i][j]
 
+                            //if a king is put in check
+                            if (canBeTakenBy(king, i, j).length > 0) {
+                                console.log(king.color + ' is in check')
+
+                                //for each possible move, check if the king could move there
+                                let kingCanMove = true;
+                                king.checkPossibleMoves()
+
+                                king.possibleMoves.forEach(move => {
+
+                                    let row = move[0]
+                                    let column = move[1]
+                                    if (canBeTakenBy(king, row, column).length > 0) {
+                                        console.log('king cant move to this square')
+                                        kingCanMove = false;
+                                    }
+                                })
+
+                                //for each piece that has been checked, check if it can be taken by one of your pieces
+                                let checkingPiecesCanBeTaken = false;
+                                canBeTakenBy(king, i, j).forEach(piece => {
+                                    console.log(`checking ${piece} at ${piece.row} ${piece.column}`)
+                                    if (canBeTakenBy(piece, piece.row, piece.column).length > 0) {
+                                        console.log('can be taken')
+                                        checkingPiecesCanBeTaken = true;
+                                    }
+                                })
+                                if (!kingCanMove && !checkingPiecesCanBeTaken) {
+                                    console.log('checkmate')
+                                }
+                            }
+                        }
+                    }
+                }
 
                 //swap turns
                 if (movedPiece.color == 'white') {

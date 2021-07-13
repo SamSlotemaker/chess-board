@@ -41,7 +41,6 @@ function checkPawnSpots(piece, row, column) {
 
 //check king spots 
 function checkKingSpots(row, column) {
-    console.log(row, column)
     let possibleMoves = []
     //king can move 1 square in every direction
     // horizonal + vertical
