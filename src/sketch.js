@@ -208,14 +208,12 @@ function mouseReleased() {
             // if a king moves 2 squares, it needs to be castled
             if (movedPiece.constructor.name.toLowerCase() == 'king') {
                 if (columnReleased == columnClicked - 2 && rowClicked === rowReleased && !movedPiece.hasMoved) {
-                    console.log('castle links')
                     //add rook to new place
                     pieces[rowReleased][columnReleased + 1] = pieces[rowReleased][0]
                     pieces[rowReleased][0] = ''
 
                     pieces[rowReleased][columnReleased + 1].column = columnReleased + 1
                 } else if (columnReleased == columnClicked + 2 && rowClicked === rowReleased && !movedPiece.hasMoved) {
-                    console.log('castle rechts');
                     //add rook to new place
                     pieces[rowReleased][columnReleased - 1] = pieces[rowReleased][7]
                     pieces[rowReleased][7] = ''
@@ -227,19 +225,21 @@ function mouseReleased() {
             for (let i = 0; i < rows; i++) {
                 //for each column
                 for (let j = 0; j < columns; j++) {
-
-
                     //check if a king is in check
                     if (getPieceName(pieces, [i, j]) == 'king') {
-                        if (pieces[i][j].isInCheck(i, j)) {
-
+                        let king = pieces[i][j]
+                        console.log(i, j)
+                        if (canBeTaken(king, i, j)) {
+                            console.log(king.color + ' is in check')
                         }
                     }
 
                     //find the king with the same color as the player thats moving
                     if (getPieceName(pieces, [i, j]) == 'king' && pieces[i][j].color == movedColor) {
+                        console.log(i, j)
+                        let king = pieces[i][j]
                         //if he puts himself in check
-                        if (pieces[i][j].isInCheck(i, j)) {
+                        if (canBeTaken(king, i, j)) {
                             console.log(movedColor + ' put himself in check')
                             turnInfo.textContent = 'You cant put yourself in check'
                             //reset moves because you can't put yourself in check

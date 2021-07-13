@@ -26,8 +26,22 @@ function wouldCaptureOwnPiece(pieces, oldRow, oldColumn, newRow, newColumn) {
     }
 }
 
+function checkPawnSpots(piece, row, column) {
+    let color = piece.color
+    let possibleSpots = []
+    if (color == 'white') {
+        possibleSpots.push([row - 1, column - 1])
+        possibleSpots.push([row - 1, column + 1])
+    } else {
+        possibleSpots.push([row + 1, column - 1])
+        possibleSpots.push([row + 1, column + 1])
+    }
+    return possibleSpots
+}
+
 //check king spots 
 function checkKingSpots(row, column) {
+    console.log(row, column)
     let possibleMoves = []
     //king can move 1 square in every direction
     // horizonal + vertical
@@ -289,6 +303,19 @@ function getPieceColor(pieces, position) {
     }
 }
 
+function isOpposingPawn(pieces, piece, ownColor) {
+    const pieceName = getPieceName(pieces, piece)
+    const pieceColor = getPieceColor(pieces, piece)
+    if (pieceName == 'pawn') {
+        if (pieceColor != ownColor) {
+            return true
+        }
+    } else {
+        return false
+    }
+}
+
+
 function isOpposingRookOrQueen(pieces, piece, ownColor) {
     const pieceName = getPieceName(pieces, piece)
     const pieceColor = getPieceColor(pieces, piece)
@@ -336,5 +363,91 @@ function isOpposingKing(pieces, piece, ownColor) {
     } else {
         return false
     }
+}
+
+// check if piece can be taken
+function canBeTaken(piece, i, j) {
+    //check every roadblock, if corresponding roadblocks are checking pieces. 
+    //check for knight moves
+    const row = i
+    const column = j
+
+    const piecesThatCanTake = []
+
+    const roadblockDown = checkRoadblockDown(pieces, row, column)
+    const roadblockUp = checkRoadblockUp(pieces, row, column)
+    const roadblockLeft = checkRoadblockLeft(pieces, row, column)
+    const roadblockRight = checkRoadblockRight(pieces, row, column)
+    const roadblockUpRight = checkRoadblockDiagonalUpRight(pieces, row, column)
+    const roadblockUpLeft = checkRoadblockDiagonalUpLeft(pieces, row, column)
+    const roadblockDownRight = checkRoadblockDiagonalDownRight(pieces, row, column)
+    const roadblockDownLeft = checkRoadblockDiagonalDownLeft(pieces, row, column)
+
+
+    let canTake = false;
+
+
+    if (isOpposingRookOrQueen(pieces, roadblockUp, piece.color) || isOpposingRookOrQueen(pieces, roadblockDown, piece.color) || isOpposingRookOrQueen(pieces, roadblockLeft, piece.color) || isOpposingRookOrQueen(pieces, roadblockRight, piece.color)) {
+        canTake = true
+    }
+    if (isOpposingBishopOrQueen(pieces, roadblockUpRight, piece.color) || isOpposingBishopOrQueen(pieces, roadblockUpLeft, piece.color) || isOpposingBishopOrQueen(pieces, roadblockDownRight, piece.color) || isOpposingBishopOrQueen(pieces, roadblockDownLeft, piece.color)) {
+        canTake = true
+    }
+
+    // one move spots where pieces can be that can take the king
+    let possibleKingSpots = checkKingSpots(row, column)
+    let possiblePawnSpots = checkPawnSpots(piece, row, column)
+    let possibleHorseSpots = checkHorseSpots(row, column)
+
+
+
+
+
+    // filter out all moves that go outside the board
+    let possibleHorseMovesFiltered = possibleHorseSpots.filter(move => {
+        if (move[0] < 0 || move[1] < 0 || move[0] > 7 || move[1] > 7 || move == [piece.row, piece.column]) {
+            return false
+        } else {
+            return true
+        }
+    })
+
+    let possibleKingMovesFiltered = possibleKingSpots.filter(move => {
+        if (move[0] < 0 || move[1] < 0 || move[0] > 7 || move[1] > 7 || move == [piece.row, piece.column]) {
+            return false
+        } else {
+            return true
+        }
+    })
+
+    let possiblePawnMovesFiltered = possiblePawnSpots.filter(move => {
+        if (move[0] < 0 || move[1] < 0 || move[0] > 7 || move[1] > 7 || move == [piece.row, piece.column]) {
+            return false
+        } else {
+            return true
+        }
+    })
+
+    possiblePawnMovesFiltered.forEach(spot => {
+        if (isOpposingPawn(pieces, spot, piece.color)) {
+            console.log('opposing pawn found')
+            canTake = true
+        }
+    })
+
+    possibleHorseMovesFiltered.forEach(spot => {
+        if (isOpposingHorse(pieces, spot, piece.color)) {
+            console.log('opposing horse found')
+            canTake = true
+        }
+    })
+
+    possibleKingMovesFiltered.forEach(spot => {
+        if (isOpposingKing(pieces, spot, piece.color)) {
+            console.log('opposing king found')
+            canTake = true
+        }
+    })
+    return canTake
 }
 

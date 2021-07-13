@@ -74,66 +74,6 @@ class King {
         })
     }
 
-    isInCheck(i, j) {
-        //check every roadblock, if corresponding roadblocks are checking pieces. 
-        //check for knight moves
-        const row = i
-        const column = j
-
-        const roadblockDown = checkRoadblockDown(pieces, row, column)
-        const roadblockUp = checkRoadblockUp(pieces, row, column)
-        const roadblockLeft = checkRoadblockLeft(pieces, row, column)
-        const roadblockRight = checkRoadblockRight(pieces, row, column)
-        const roadblockUpRight = checkRoadblockDiagonalUpRight(pieces, row, column)
-        const roadblockUpLeft = checkRoadblockDiagonalUpLeft(pieces, row, column)
-        const roadblockDownRight = checkRoadblockDiagonalDownRight(pieces, row, column)
-        const roadblockDownLeft = checkRoadblockDiagonalDownLeft(pieces, row, column)
-
-
-        let check = false;
-        if (isOpposingRookOrQueen(pieces, roadblockUp, this.color) || isOpposingRookOrQueen(pieces, roadblockDown, this.color) || isOpposingRookOrQueen(pieces, roadblockLeft, this.color) || isOpposingRookOrQueen(pieces, roadblockRight, this.color)) {
-            check = true
-        }
-        if (isOpposingBishopOrQueen(pieces, roadblockUpRight, this.color) || isOpposingBishopOrQueen(pieces, roadblockUpLeft, this.color) || isOpposingBishopOrQueen(pieces, roadblockDownRight, this.color) || isOpposingBishopOrQueen(pieces, roadblockDownLeft, this.color)) {
-            check = true
-        }
-
-        let possibleKingSpots = checkKingSpots(row, column)
-
-        // check all horse moves 
-        // all possible moves
-        let possibleHorseSpots = checkHorseSpots(row, column)
-
-        // filter out all moves that go outside the board
-        let possibleHorseMovesFiltered = possibleHorseSpots.filter(move => {
-            if (move[0] < 0 || move[1] < 0 || move[0] > 7 || move[1] > 7 || move == [this.row, this.column]) {
-                return false
-            } else {
-                return true
-            }
-        })
-        possibleHorseMovesFiltered.forEach(spot => {
-            if (isOpposingHorse(pieces, spot, this.color)) {
-                console.log('opposing horse found')
-                check = true
-            }
-        })
-
-        let possibleKingMovesFiltered = possibleKingSpots.filter(move => {
-            if (move[0] < 0 || move[1] < 0 || move[0] > 7 || move[1] > 7 || move == [this.row, this.column]) {
-                return false
-            } else {
-                return true
-            }
-        })
-        possibleKingMovesFiltered.forEach(spot => {
-            if (isOpposingKing(pieces, spot, this.color)) {
-                console.log('opposing king found')
-                check = true
-            }
-        })
-        return check
-    }
 
     //check if piece can move
     move(row, column) {
