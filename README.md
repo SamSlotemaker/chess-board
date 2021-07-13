@@ -33,7 +33,7 @@ A chessboard with JavaScript and the p5.js library.
 ### Mating
 * [X] Check
 * [X] Can't put yourself in check / forced to move out of a check
-* [ ] Checkmate
+* [X] Checkmate
 
 ### Information
 * [X] Show Possible moves on the tiles
