@@ -185,114 +185,121 @@ function mouseReleased() {
     if (locked) {
         let rowReleased = Math.floor(mouseY / tileSize)
         let columnReleased = Math.floor(mouseX / tileSize)
+        console.log(`placing move: placeMove(${rowClicked},${columnClicked},${rowReleased},${columnReleased})`)
+        placeMove(rowClicked, columnClicked, rowReleased, columnReleased)
+        locked = false
+    }
 
-        //check if piece can move
-        let pieceCanMove = pieces[rowClicked][columnClicked].move(rowReleased, columnReleased)
+    //check if piece can move
 
-        if (pieceCanMove) {
-            //swap places in array with moved piece
-            const oldPiece = pieces[rowReleased][columnReleased]
-            const movedPiece = pieces[rowClicked][columnClicked]
-            pieces[rowReleased][columnReleased] = pieces[rowClicked][columnClicked]
-            pieces[rowClicked][columnClicked] = ''
+}
 
-            const movedColor = movedPiece.color
+function placeMove(fromRow, fromColumn, toRow, toColumn) {
+    let pieceCanMove = pieces[fromRow][fromColumn].move(toRow, toColumn)
+    console.log(pieces[6][3].move(5, 3))
 
-            // if a king moves 2 squares, it needs to be castled
-            if (movedPiece.constructor.name.toLowerCase() == 'king') {
-                if (columnReleased == columnClicked - 2 && rowClicked === rowReleased && !movedPiece.hasMoved) {
-                    //add rook to new place
-                    pieces[rowReleased][columnReleased + 1] = pieces[rowReleased][0]
-                    pieces[rowReleased][0] = ''
+    if (pieceCanMove) {
+        //swap places in array with moved piece
+        const oldPiece = pieces[toRow][toColumn]
+        const movedPiece = pieces[fromRow][fromColumn]
+        pieces[toRow][toColumn] = pieces[fromRow][fromColumn]
+        pieces[fromRow][fromColumn] = ''
 
-                    pieces[rowReleased][columnReleased + 1].column = columnReleased + 1
-                } else if (columnReleased == columnClicked + 2 && rowClicked === rowReleased && !movedPiece.hasMoved) {
-                    //add rook to new place
-                    pieces[rowReleased][columnReleased - 1] = pieces[rowReleased][7]
-                    pieces[rowReleased][7] = ''
+        const movedColor = movedPiece.color
 
-                    pieces[rowReleased][columnReleased - 1].column = columnReleased - 1
+        // if a king moves 2 squares, it needs to be castled
+        if (movedPiece.constructor.name.toLowerCase() == 'king') {
+            if (toColumn == fromColumn - 2 && fromRow === toRow && !movedPiece.hasMoved) {
+                //add rook to new place
+                pieces[toRow][toColumn + 1] = pieces[toRow][0]
+                pieces[toRow][0] = ''
+
+                pieces[toRow][toColumn + 1].column = toColumn + 1
+            } else if (toColumn == fromColumn + 2 && fromRow === toRow && !movedPiece.hasMoved) {
+                //add rook to new place
+                pieces[toRow][toColumn - 1] = pieces[toRow][7]
+                pieces[toRow][7] = ''
+
+                pieces[toRow][toColumn - 1].column = toColumn - 1
+            }
+        }
+
+
+        //remove other enpassants of your color. because it's only available 1 turn
+        for (let i = 0; i < rows; i++) {
+            //for each column
+            for (let j = 0; j < columns; j++) {
+                if (getPieceName(pieces, [i, j]) == 'pawn' && pieces[i][j].color == movedColor) {
+                    pieces[i][j].enpassant = false
                 }
             }
-
-
-            //remove other enpassants of your color. because it's only available 1 turn
-            for (let i = 0; i < rows; i++) {
-                //for each column
-                for (let j = 0; j < columns; j++) {
-                    if (getPieceName(pieces, [i, j]) == 'pawn' && pieces[i][j].color == movedColor) {
-                        pieces[i][j].enpassant = false
-                    }
-                }
+        }
+        //check if a pawn moves
+        if (getPieceName(pieces, [toRow, toColumn]) == 'pawn') {
+            //check if it moved 2 places to enable an an passant capture
+            if (toRow - movedPiece.row == 2 || toRow - movedPiece.row == -2) {
+                movedPiece.enpassant = true;
             }
-            //check if a pawn moves
-            if (getPieceName(pieces, [rowReleased, columnReleased]) == 'pawn') {
-                //check if it moved 2 places to enable an an passant capture
-                if (rowReleased - movedPiece.row == 2 || rowReleased - movedPiece.row == -2) {
-                    movedPiece.enpassant = true;
-                }
 
-                //check if an enpassent has been made: column doesn't match but no piece captured
-                if (typeof oldPiece != 'object' && movedPiece.column != columnReleased) {
-                    //remove the piece that is captured en passant by checking which was was able to.
-                    for (let i = 0; i < rows; i++) {
-                        for (let j = 0; j < columns; j++) {
-                            if (pieces[i][j].enpassant) {
-                                pieces[i][j] = ''
-                            }
+            //check if an enpassent has been made: column doesn't match but no piece captured
+            if (typeof oldPiece != 'object' && movedPiece.column != toColumn) {
+                //remove the piece that is captured en passant by checking which was was able to.
+                for (let i = 0; i < rows; i++) {
+                    for (let j = 0; j < columns; j++) {
+                        if (pieces[i][j].enpassant) {
+                            pieces[i][j] = ''
                         }
                     }
                 }
             }
-
-            let placedMove = getNotation([rowClicked, columnClicked], [rowReleased, columnReleased], oldPiece)
-
-            turnInfo.textContent = ''
-
-            //update new position
-            pieces[rowReleased][columnReleased].row = rowReleased
-            pieces[rowReleased][columnReleased].column = columnReleased
-
-            //if the moved piece is either king or rook, set it's state to moved, so it cant castle anymore
-            if (getPieceName(pieces, [rowReleased, columnReleased]) == 'king' || getPieceName(pieces, [rowReleased, columnReleased]) == 'rook') {
-                pieces[rowReleased][columnReleased].hasMoved = true;
-            }
-            //check for checkmate
-            let check = isInCheck(movedColor)
-            let checkMate = isCheckMate(movedColor)
-            if (checkMate) {
-                turnInfo.textContent = 'Checkmate.'
-                placedMove += '#'
-            }
-            if (check && !checkMate) {
-                placedMove += '+'
-            }
-            turnList.insertAdjacentHTML('beforeend', `<li>${turnCount}. ${placedMove}</li>`)
-
-            //swap turns
-            if (movedPiece.color == 'white') {
-                turn = 'black'
-            } else {
-                turnCount++
-                turn = 'white'
-            }
-
-            if (turnElement) {
-                turnElement.textContent = turn
-            }
         }
 
-        // update the piece locations with thier new positions
-        for (let i = 0; i < rows; i++) {
-            //for each column
-            for (let j = 0; j < columns; j++) {
-                //remove possible move colors 
-                board[i][j].possibleMove = false;
-                if (typeof pieces[i][j] == 'object') {
-                    pieces[i][j].update(i, j)
-                }
+        let placedMove = getNotation([fromRow, fromColumn], [toRow, toColumn], oldPiece)
+
+        turnInfo.textContent = ''
+
+        //update new position
+        pieces[toRow][toColumn].row = toRow
+        pieces[toRow][toColumn].column = toColumn
+
+        //if the moved piece is either king or rook, set it's state to moved, so it cant castle anymore
+        if (getPieceName(pieces, [toRow, toColumn]) == 'king' || getPieceName(pieces, [toRow, toColumn]) == 'rook') {
+            pieces[toRow][toColumn].hasMoved = true;
+        }
+        //check for checkmate
+        let check = isInCheck(movedColor)
+        let checkMate = isCheckMate(movedColor)
+        if (checkMate) {
+            turnInfo.textContent = 'Checkmate.'
+            placedMove += '#'
+        }
+        if (check && !checkMate) {
+            placedMove += '+'
+        }
+        turnList.insertAdjacentHTML('beforeend', `<li>${turnCount}. ${placedMove}</li>`)
+
+        //swap turns
+        if (movedPiece.color == 'white') {
+            turn = 'black'
+        } else {
+            turnCount++
+            turn = 'white'
+        }
+
+        if (turnElement) {
+            turnElement.textContent = turn
+        }
+    }
+
+    // update the piece locations with thier new positions
+    for (let i = 0; i < rows; i++) {
+        //for each column
+        for (let j = 0; j < columns; j++) {
+            //remove possible move colors 
+            board[i][j].possibleMove = false;
+            if (typeof pieces[i][j] == 'object') {
+                pieces[i][j].update(i, j)
             }
         }
     }
-    locked = false
 }

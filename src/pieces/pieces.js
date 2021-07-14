@@ -27,10 +27,12 @@ Object.prototype.move = function (row, column) {
     let newRow = row
     let newColumn = column
 
+    this.checkPossibleMoves()
 
     //if move is possible, update position and return true
     let pieceCanMove = false;
     this.possibleMoves.forEach(move => {
+        console.log('hier')
 
         //if a possible move is the same as the move that you're trying to do
         if (move[0] === newRow && move[1] === newColumn) {
