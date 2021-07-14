@@ -32,8 +32,6 @@ Object.prototype.move = function (row, column) {
     //if move is possible, update position and return true
     let pieceCanMove = false;
     this.possibleMoves.forEach(move => {
-        console.log('hier')
-
         //if a possible move is the same as the move that you're trying to do
         if (move[0] === newRow && move[1] === newColumn) {
             // return true
@@ -322,11 +320,12 @@ function filterRoadBlockDownLeft(movesArray, roadBlock) {
 
 function getPieceName(pieces, position) {
     if (position) {
-        const pieceName = pieces[position[0]][position[1]].constructor.name
-        return pieceName.toLowerCase()
-    } else {
-        return false
+        if (typeof pieces[position[0]][position[1]] == 'object') {
+            const pieceName = pieces[position[0]][position[1]].constructor.name
+            return pieceName.toLowerCase()
+        }
     }
+    return false
 }
 function getPieceColor(pieces, position) {
     if (position) {

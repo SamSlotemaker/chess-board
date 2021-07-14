@@ -138,7 +138,6 @@ class Pawn {
     }
 
     promote(color) {
-        console.log('promote pawn')
         if (color == 'black') {
             pieces[this.row + 1][this.column] = new Queen(this.size, this.row, this.column, this.color)
         } else {

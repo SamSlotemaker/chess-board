@@ -144,9 +144,14 @@ function draw() {
     if (turn == 'black' && !gameOver) {
         if (computerCheckbox.checked) {
             const movingPieces = findPiecesThatCanMove(findOwnPieces(pieces, 'black'))
-            const randomPiece = chooseRandom(movingPieces)
-            const randomMove = chooseRandom(randomPiece.possibleMoves)
-            placeMove(randomPiece.row, randomPiece.column, randomMove[0], randomMove[1])
+            // const randomPiece = chooseRandom(movingPieces)
+            // const randomMove = chooseRandom(randomPiece.possibleMoves)
+            const bestOptions = chooseBestPieceToMove(pieces, movingPieces, pointScheme)
+            console.log(bestOptions)
+            const bestMove = bestOptions.move
+            const bestPiece = bestOptions.piece
+
+            placeMove(bestPiece.row, bestPiece.column, bestMove[0], bestMove[1])
         }
     }
 }
