@@ -1,5 +1,5 @@
 # chess-board
-A chessboard with JavaScript and the p5.js library.
+A working chessboard, made with P5.js. The chess logic is completely written from scratch. 
 
 ## checklist
 
@@ -22,7 +22,8 @@ A chessboard with JavaScript and the p5.js library.
 * [X] ^ Horizontal & Vertical
 * [X] ^ Diagonal
 
-* [X] Castling move
+* [X] Castling move 
+* [ ] No castling out of check or into check
 
 ### Capturing
 * [X]  Capturing pieces

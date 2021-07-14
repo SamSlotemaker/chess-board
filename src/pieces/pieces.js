@@ -513,3 +513,48 @@ function filterCheckingMoves(possibleMoves, color, row, column) {
     return possibleMovesFiiltered
 }
 
+function isCheckMate(movedColor) {
+    // CHECK FOR CHECKMATE
+    let checkMate = true
+    for (let i = 0; i < rows; i++) {
+        //for each column
+        for (let j = 0; j < columns; j++) {
+            //check if the other king is in check
+            if (getPieceName(pieces, [i, j]) == 'king' && pieces[i][j].color != movedColor) {
+                let king = pieces[i][j]
+                //check if another piece can block the king, only if 1 piece is checking and is no horse or pawn (those cant be blocked)
+                for (let i = 0; i < rows; i++) {
+                    //for each column
+                    for (let j = 0; j < columns; j++) {
+                        let piece = pieces[i][j]
+                        if (typeof piece == 'object' && piece.color == king.color) {
+                            piece.checkPossibleMoves()
+                            if (piece.possibleMoves.length > 0) {
+                                checkMate = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return checkMate
+}
+
+function isInCheck(movedColor) {
+    let king;
+    for (let i = 0; i < rows; i++) {
+        //for each column
+        for (let j = 0; j < columns; j++) {
+            if (getPieceName(pieces, [i, j]) == 'king' && pieces[i][j].color != movedColor) {
+                king = pieces[i][j]
+            }
+        }
+    }
+
+    if (canBeTakenBy(king, king.row, king.column).length > 0) {
+        return true
+    } else {
+        return false
+    }
+}

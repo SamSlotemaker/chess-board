@@ -1,10 +1,12 @@
 //global values
 const turnElement = document.getElementById('turn')
 const turnInfo = document.getElementById('turn-info')
+const turnList = document.getElementById('turn-list')
 const boardSize = 600
 let columns = 8
 let rows = 8
 let tileSize = boardSize / columns
+let turnCount = 1
 let turn = 'white'
 
 // don't let users rightclick the chessboard
@@ -16,17 +18,6 @@ document.addEventListener('contextmenu', (event) => {
 
 
 //board
-let boardNotation = [
-    ['A8', 'B8', 'C8', 'D8', 'E8', 'F8', 'G8', 'H8'],
-    ['A7', 'B7', 'C7', 'D7', 'E7', 'F7', 'G7', 'H7'],
-    ['A6', 'B6', 'C6', 'D6', 'E6', 'F6', 'G6', 'H6'],
-    ['A5', 'B5', 'C5', 'D5', 'E5', 'F5', 'G5', 'H5'],
-    ['A4', 'B4', 'C4', 'D4', 'E4', 'F4', 'G4', 'H4'],
-    ['A3', 'B3', 'C3', 'D3', 'E3', 'F3', 'G3', 'H3'],
-    ['A2', 'B2', 'C2', 'D2', 'E2', 'F2', 'G2', 'H2'],
-    ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1'],
-]
-
 let board = [
     ['', '', '', '', '', '', '', ''],
     ['', '', '', '', '', '', '', ''],
@@ -254,7 +245,10 @@ function mouseReleased() {
                 }
             }
 
+            let placedMove = getNotation([rowClicked, columnClicked], [rowReleased, columnReleased], oldPiece)
+
             turnInfo.textContent = ''
+
             //update new position
             pieces[rowReleased][columnReleased].row = rowReleased
             pieces[rowReleased][columnReleased].column = columnReleased
@@ -263,44 +257,26 @@ function mouseReleased() {
             if (getPieceName(pieces, [rowReleased, columnReleased]) == 'king' || getPieceName(pieces, [rowReleased, columnReleased]) == 'rook') {
                 pieces[rowReleased][columnReleased].hasMoved = true;
             }
-
-            // CHECK FOR CHECKMATE
-            for (let i = 0; i < rows; i++) {
-                //for each column
-                for (let j = 0; j < columns; j++) {
-                    //check if the other king is in check
-                    if (getPieceName(pieces, [i, j]) == 'king' && pieces[i][j].color != movedColor) {
-                        let king = pieces[i][j]
-
-                        let checkingPieces = canBeTakenBy(king, i, j)
-                        //if a king is put in check
-                        if (checkingPieces.length > 0) {
-                            let pieceCanBlock = false
-                            //check if another piece can block the king, only if 1 piece is checking and is no horse or pawn (those cant be blocked)
-                            for (let i = 0; i < rows; i++) {
-                                //for each column
-                                for (let j = 0; j < columns; j++) {
-                                    let piece = pieces[i][j]
-                                    if (typeof piece == 'object' && piece.color == king.color) {
-                                        piece.checkPossibleMoves()
-                                        if (piece.possibleMoves.length > 0) {
-                                            pieceCanBlock = true;
-                                        }
-                                    }
-                                }
-                            }
-                            if (!pieceCanBlock) {
-                                turnInfo.textContent = 'Checkmate.'
-                            }
-                        }
-                    }
-                }
+            //check for checkmate
+            let check = isInCheck(movedColor)
+            let checkMate = isCheckMate(movedColor)
+            if (checkMate) {
+                turnInfo.textContent = 'Checkmate.'
+                placedMove += '#'
             }
+            if (check && !checkMate) {
+                placedMove += '+'
+            }
+            turnList.insertAdjacentHTML('beforeend', `<li>${turnCount}. ${placedMove}</li>`)
+
+
+
 
             //swap turns
             if (movedPiece.color == 'white') {
                 turn = 'black'
             } else {
+                turnCount++
                 turn = 'white'
             }
 
