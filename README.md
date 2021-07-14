@@ -47,6 +47,7 @@ A working chessboard, made with P5.js. The chess logic is completely written fro
 
 ### Playing a computer
 * [X] Computer makes random legal moves
+* [X] Computer chooses a 'best' move from a point scheme, will always capture the highest point piece"
  
 
 
