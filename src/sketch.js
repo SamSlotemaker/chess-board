@@ -126,7 +126,6 @@ function draw() {
             }
         }
     }
-
     // change cursor when hovering over a piece check it by deviding the X and Y by the tilesize
     let columnHovered = Math.floor(mouseX / tileSize)
     let rowHovered = Math.floor(mouseY / tileSize)
@@ -137,6 +136,14 @@ function draw() {
         } else {
             cursor()
         }
+    }
+
+    if (turn == 'black') {
+        console.log('black will move')
+        const movingPieces = findPiecesThatCanMove(findOwnPieces(pieces, 'black'))
+        const randomPiece = chooseRandom(movingPieces)
+        const randomMove = chooseRandom(randomPiece.possibleMoves)
+        placeMove(randomPiece.row, randomPiece.column, randomMove[0], randomMove[1])
     }
 }
 
@@ -185,7 +192,6 @@ function mouseReleased() {
     if (locked) {
         let rowReleased = Math.floor(mouseY / tileSize)
         let columnReleased = Math.floor(mouseX / tileSize)
-        console.log(`placing move: placeMove(${rowClicked},${columnClicked},${rowReleased},${columnReleased})`)
         placeMove(rowClicked, columnClicked, rowReleased, columnReleased)
         locked = false
     }
@@ -196,7 +202,6 @@ function mouseReleased() {
 
 function placeMove(fromRow, fromColumn, toRow, toColumn) {
     let pieceCanMove = pieces[fromRow][fromColumn].move(toRow, toColumn)
-    console.log(pieces[6][3].move(5, 3))
 
     if (pieceCanMove) {
         //swap places in array with moved piece
