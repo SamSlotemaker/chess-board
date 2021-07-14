@@ -27,7 +27,7 @@ Object.prototype.move = function (row, column) {
     let newRow = row
     let newColumn = column
 
-    this.checkPossibleMoves()
+    this.checkPossibleMoves(pieces)
 
     //if move is possible, update position and return true
     let pieceCanMove = false;
@@ -553,7 +553,7 @@ function isCheckMate(movedColor) {
                     for (let j = 0; j < columns; j++) {
                         let piece = pieces[i][j]
                         if (typeof piece == 'object' && piece.color == king.color) {
-                            piece.checkPossibleMoves()
+                            piece.checkPossibleMoves(pieces)
                             if (piece.possibleMoves.length > 0) {
                                 checkMate = false;
                             }

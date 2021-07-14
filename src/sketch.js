@@ -143,6 +143,8 @@ function draw() {
     //if it's black turn and 'play computer' checkbox is checked, let black make a random move.
     if (turn == 'black' && !gameOver) {
         if (computerCheckbox.checked) {
+
+
             const movingPieces = findPiecesThatCanMove(findOwnPieces(pieces, 'black'))
             // const randomPiece = chooseRandom(movingPieces)
             // const randomMove = chooseRandom(randomPiece.possibleMoves)
@@ -186,7 +188,7 @@ function mousePressed(e) {
     //check if clicked tile has a piece on it
     if (isPiece(pieces, rowClicked, columnClicked)) {
         //check possible moves when piece is clicked
-        pieces[rowClicked][columnClicked].checkPossibleMoves()
+        pieces[rowClicked][columnClicked].checkPossibleMoves(pieces)
         locked = true
     } else {
         locked = false
@@ -215,9 +217,11 @@ function mouseReleased() {
 
 function placeMove(fromRow, fromColumn, toRow, toColumn) {
     let pieceCanMove = pieces[fromRow][fromColumn].move(toRow, toColumn)
-    const movingPieces = findPiecesThatCanMove(findOwnPieces(pieces, 'black'))
-    const bestOptions = chooseBestMove(pieces, movingPieces, pointScheme)
-    console.log(bestOptions)
+    // const movingPieces = findPiecesThatCanMove(findOwnPieces(pieces, 'black'))
+    // const bestOptions = chooseBestMove(pieces, movingPieces, pointScheme)
+
+    console.log(pieceCanMove)
+
     if (pieceCanMove) {
         //swap places in array with moved piece
         const oldPiece = pieces[toRow][toColumn]

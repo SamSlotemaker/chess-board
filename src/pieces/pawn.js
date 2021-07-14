@@ -18,7 +18,7 @@ class Pawn {
         this.possibleMoves = []
     }
 
-    checkPossibleMoves() {
+    checkPossibleMoves(pieces) {
         let oldRow = this.row
         let oldColumn = this.column
 
