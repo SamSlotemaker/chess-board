@@ -139,9 +139,9 @@ class Pawn {
 
     promote(color) {
         if (color == 'black') {
-            pieces[this.row + 1][this.column] = new Queen(this.size, this.row, this.column, this.color)
+            pieces[this.row][this.column] = new Queen(this.size, this.row, this.column, this.color)
         } else {
-            pieces[this.row - 1][this.column] = new Queen(this.size, this.row, this.column, this.color)
+            pieces[this.row][this.column] = new Queen(this.size, this.row, this.column, this.color)
         }
     }
 }

@@ -255,10 +255,7 @@ function placeMove(fromRow, fromColumn, toRow, toColumn) {
                 movedPiece.enpassant = true;
             }
 
-            //check if it promotes 
-            if ((movedPiece.row + 1 == 7 && movedPiece.color == 'black') || (movedPiece.row - 1 == 0 && movedPiece.color == 'white')) {
-                movedPiece.promote(movedPiece.color)
-            }
+
 
             //check if an enpassent has been made: column doesn't match but no piece captured
             if (typeof oldPiece != 'object' && movedPiece.column != toColumn) {
@@ -280,6 +277,13 @@ function placeMove(fromRow, fromColumn, toRow, toColumn) {
         //update new position
         pieces[toRow][toColumn].row = toRow
         pieces[toRow][toColumn].column = toColumn
+
+        //check if a pawn promotes 
+        if (getPieceName(pieces, [toRow, toColumn]) == 'pawn') {
+            if ((movedPiece.row == 7 && movedPiece.color == 'black') || (movedPiece.row == 0 && movedPiece.color == 'white')) {
+                movedPiece.promote(movedPiece.color)
+            }
+        }
 
         //if the moved piece is either king or rook, set it's state to moved, so it cant castle anymore
         if (getPieceName(pieces, [toRow, toColumn]) == 'king' || getPieceName(pieces, [toRow, toColumn]) == 'rook') {
