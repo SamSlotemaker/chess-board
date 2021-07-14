@@ -10,6 +10,7 @@ A working chessboard, made with P5.js. The chess logic is completely written fro
 
 ### Moving
 * [X] Pawn move (single + double)
+* [X] Pawn promoting when reaching the end of the board
 * [X] Rook move
 * [X] Bishop move
 * [X] Horse move
@@ -26,7 +27,7 @@ A working chessboard, made with P5.js. The chess logic is completely written fro
 * [ ] No castling out of check or into check
 
 ### Capturing
-* [X]  Capturing pieces
+* [X] Capturing pieces
 * [X] Pieces can only capture the other color
 * [X] En Passant capturing
 
@@ -44,5 +45,8 @@ A working chessboard, made with P5.js. The chess logic is completely written fro
 ### Optional
 * [ ] Socket connection for multiplayer
 
+### Playing a computer
+* [X] Computer makes random legal moves
+ 
 
 
