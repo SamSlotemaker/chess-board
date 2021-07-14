@@ -2,12 +2,14 @@
 const turnElement = document.getElementById('turn')
 const turnInfo = document.getElementById('turn-info')
 const turnList = document.getElementById('turn-list')
+const computerCheckbox = document.getElementById('computer')
 const boardSize = 600
 let columns = 8
 let rows = 8
 let tileSize = boardSize / columns
 let turnCount = 1
 let turn = 'white'
+let gameOver = false
 
 // don't let users rightclick the chessboard
 document.addEventListener('contextmenu', (event) => {
@@ -138,12 +140,14 @@ function draw() {
         }
     }
 
-    if (turn == 'black') {
-        console.log('black will move')
-        const movingPieces = findPiecesThatCanMove(findOwnPieces(pieces, 'black'))
-        const randomPiece = chooseRandom(movingPieces)
-        const randomMove = chooseRandom(randomPiece.possibleMoves)
-        placeMove(randomPiece.row, randomPiece.column, randomMove[0], randomMove[1])
+    //if it's black turn and 'play computer' checkbox is checked, let black make a random move.
+    if (turn == 'black' && !gameOver) {
+        if (computerCheckbox.checked) {
+            const movingPieces = findPiecesThatCanMove(findOwnPieces(pieces, 'black'))
+            const randomPiece = chooseRandom(movingPieces)
+            const randomMove = chooseRandom(randomPiece.possibleMoves)
+            placeMove(randomPiece.row, randomPiece.column, randomMove[0], randomMove[1])
+        }
     }
 }
 
@@ -246,6 +250,11 @@ function placeMove(fromRow, fromColumn, toRow, toColumn) {
                 movedPiece.enpassant = true;
             }
 
+            //check if it promotes 
+            if ((movedPiece.row + 1 == 7 && movedPiece.color == 'black') || (movedPiece.row - 1 == 0 && movedPiece.color == 'white')) {
+                movedPiece.promote(movedPiece.color)
+            }
+
             //check if an enpassent has been made: column doesn't match but no piece captured
             if (typeof oldPiece != 'object' && movedPiece.column != toColumn) {
                 //remove the piece that is captured en passant by checking which was was able to.
@@ -275,6 +284,7 @@ function placeMove(fromRow, fromColumn, toRow, toColumn) {
         let check = isInCheck(movedColor)
         let checkMate = isCheckMate(movedColor)
         if (checkMate) {
+            gameOver = true
             turnInfo.textContent = 'Checkmate.'
             placedMove += '#'
         }

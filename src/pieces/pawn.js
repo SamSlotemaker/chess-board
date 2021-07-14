@@ -29,77 +29,86 @@ class Pawn {
         if (this.color === 'white') {
             let possibleSpot1 = [startPosition[0] - 1, startPosition[1]]
 
+
             //check if there's a piece in the way of a forward move
-            if (typeof pieces[possibleSpot1[0]][possibleSpot1[1]] != 'object') {
-                // push possible move when there isn't
-                possibleMoves.push(possibleSpot1)
-            }
-
-            //2 steps possible when not moved yet
-            if (startPosition[0] == 6) {
-                //check if there's a piece in the way of a forward move
-                if (typeof pieces[startPosition[0] - 2][startPosition[1]] != 'object') {
+            if (possibleSpot1[0] >= 0) {
+                if (typeof pieces[possibleSpot1[0]][possibleSpot1[1]] != 'object') {
                     // push possible move when there isn't
-                    possibleMoves.push([startPosition[0] - 2, startPosition[1]])
+                    possibleMoves.push(possibleSpot1)
                 }
-            }
 
-            //pawn needs to capture diagonaly
-            // if there is a piece at a diagonal, add that spot to possible moves
-            if (typeof pieces[startPosition[0] - 1][startPosition[1] - 1] == 'object') {
-                possibleMoves.push([startPosition[0] - 1, startPosition[1] - 1])
-            }
-            if (typeof pieces[startPosition[0] - 1][startPosition[1] + 1] == 'object') {
-                possibleMoves.push([startPosition[0] - 1, startPosition[1] + 1])
-            }
+                //2 steps possible when not moved yet
+                if (startPosition[0] == 6) {
+                    //check if there's a piece in the way of a forward move
+                    if (typeof pieces[startPosition[0] - 1][startPosition[1]] != 'object' && typeof pieces[startPosition[0] - 2][startPosition[1]] != 'object') {
+                        // push possible move when there isn't
+                        possibleMoves.push([startPosition[0] - 2, startPosition[1]])
+                    }
+                }
 
-            //add enpassant spots when available
-            if (typeof pieces[startPosition[0]][startPosition[1] - 1] == 'object') {
-                if (pieces[startPosition[0]][startPosition[1] - 1].enpassant) {
+                //pawn needs to capture diagonaly
+                // if there is a piece at a diagonal, add that spot to possible moves
+                if (typeof pieces[startPosition[0] - 1][startPosition[1] - 1] == 'object') {
                     possibleMoves.push([startPosition[0] - 1, startPosition[1] - 1])
                 }
-            }
-            if (typeof pieces[startPosition[0]][startPosition[1] + 1] == 'object') {
-                if (pieces[startPosition[0]][startPosition[1] + 1].enpassant) {
+                if (typeof pieces[startPosition[0] - 1][startPosition[1] + 1] == 'object') {
                     possibleMoves.push([startPosition[0] - 1, startPosition[1] + 1])
                 }
+
+                //add enpassant spots when available
+                if (typeof pieces[startPosition[0]][startPosition[1] - 1] == 'object') {
+                    if (pieces[startPosition[0]][startPosition[1] - 1].enpassant) {
+                        possibleMoves.push([startPosition[0] - 1, startPosition[1] - 1])
+                    }
+                }
+                if (typeof pieces[startPosition[0]][startPosition[1] + 1] == 'object') {
+                    if (pieces[startPosition[0]][startPosition[1] + 1].enpassant) {
+                        possibleMoves.push([startPosition[0] - 1, startPosition[1] + 1])
+                    }
+                }
             }
+
+
+
 
 
         } else {
             let possibleSpot1 = [startPosition[0] + 1, startPosition[1]]
 
-            if (typeof pieces[possibleSpot1[0]][possibleSpot1[1]] != 'object') {
-                possibleMoves.push(possibleSpot1)
-            }
-
-            //2 steps possible when not moved yet
-            if (startPosition[0] == 1) {
-                if (typeof pieces[startPosition[0] + 2][startPosition[1]] != 'object') {
-                    possibleMoves.push([startPosition[0] + 2, startPosition[1]])
+            if (possibleSpot1[0] <= 7) {
+                if (typeof pieces[possibleSpot1[0]][possibleSpot1[1]] != 'object') {
+                    possibleMoves.push(possibleSpot1)
                 }
-            }
 
-            //pawn needs to capture diagonaly
-            // if there is a piece at a diagonal, add that spot to possible moves
-            if (typeof pieces[startPosition[0] + 1][startPosition[1] - 1] == 'object') {
-                possibleMoves.push([startPosition[0] + 1, startPosition[1] - 1])
-            }
-            if (typeof pieces[startPosition[0] + 1][startPosition[1] + 1] == 'object') {
-                possibleMoves.push([startPosition[0] + 1, startPosition[1] + 1])
-            }
+                //2 steps possible when not moved yet, can't move over piece
+                if (startPosition[0] == 1) {
+                    if (typeof pieces[startPosition[0] + 1][startPosition[1]] != 'object' && typeof pieces[startPosition[0] + 2][startPosition[1]] != 'object') {
+                        possibleMoves.push([startPosition[0] + 2, startPosition[1]])
+                    }
+                }
 
-            //add enpassant spots when available
-            if (typeof pieces[startPosition[0]][startPosition[1] - 1] == 'object') {
-                if (pieces[startPosition[0]][startPosition[1] - 1].enpassant) {
+                //pawn needs to capture diagonaly
+                // if there is a piece at a diagonal, add that spot to possible moves
+                if (typeof pieces[startPosition[0] + 1][startPosition[1] - 1] == 'object') {
                     possibleMoves.push([startPosition[0] + 1, startPosition[1] - 1])
                 }
-            }
-            if (typeof pieces[startPosition[0]][startPosition[1] + 1] == 'object') {
-                if (pieces[startPosition[0]][startPosition[1] + 1].enpassant) {
+                if (typeof pieces[startPosition[0] + 1][startPosition[1] + 1] == 'object') {
                     possibleMoves.push([startPosition[0] + 1, startPosition[1] + 1])
                 }
+
+                //add enpassant spots when available
+                if (typeof pieces[startPosition[0]][startPosition[1] - 1] == 'object') {
+                    if (pieces[startPosition[0]][startPosition[1] - 1].enpassant) {
+                        possibleMoves.push([startPosition[0] + 1, startPosition[1] - 1])
+                    }
+                }
+                if (typeof pieces[startPosition[0]][startPosition[1] + 1] == 'object') {
+                    if (pieces[startPosition[0]][startPosition[1] + 1].enpassant) {
+                        possibleMoves.push([startPosition[0] + 1, startPosition[1] + 1])
+                    }
+                }
             }
+
         }
 
 
@@ -126,5 +135,14 @@ class Pawn {
         this.possibleMoves.forEach(move => {
             board[move[1]][move[0]].possibleMove = true
         })
+    }
+
+    promote(color) {
+        console.log('promote pawn')
+        if (color == 'black') {
+            pieces[this.row + 1][this.column] = new Queen(this.size, this.row, this.column, this.color)
+        } else {
+            pieces[this.row - 1][this.column] = new Queen(this.size, this.row, this.column, this.color)
+        }
     }
 }
