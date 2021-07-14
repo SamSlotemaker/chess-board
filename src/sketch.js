@@ -146,8 +146,12 @@ function draw() {
             const movingPieces = findPiecesThatCanMove(findOwnPieces(pieces, 'black'))
             // const randomPiece = chooseRandom(movingPieces)
             // const randomMove = chooseRandom(randomPiece.possibleMoves)
-            const bestOptions = chooseBestPieceToMove(pieces, movingPieces, pointScheme)
+            // const bestOptions = chooseBestPieceToMove(pieces, movingPieces, pointScheme)
+
+            const bestOptions = chooseBestMove(pieces, movingPieces, pointScheme)
             console.log(bestOptions)
+
+            // console.log(bestOptions)
             const bestMove = bestOptions.move
             const bestPiece = bestOptions.piece
 
@@ -211,7 +215,9 @@ function mouseReleased() {
 
 function placeMove(fromRow, fromColumn, toRow, toColumn) {
     let pieceCanMove = pieces[fromRow][fromColumn].move(toRow, toColumn)
-
+    const movingPieces = findPiecesThatCanMove(findOwnPieces(pieces, 'black'))
+    const bestOptions = chooseBestMove(pieces, movingPieces, pointScheme)
+    console.log(bestOptions)
     if (pieceCanMove) {
         //swap places in array with moved piece
         const oldPiece = pieces[toRow][toColumn]

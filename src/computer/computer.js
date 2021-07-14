@@ -21,7 +21,7 @@ pointScheme = [
     },
     {
         name: 'king',
-        points: 400
+        points: 900
     },
     {
         name: '',
@@ -53,6 +53,10 @@ function chooseRandom(array) {
     return randomObject
 }
 
+function findPoints(name, pointScheme) {
+    return pointScheme.find(item => item.name === name).points
+}
+
 function chooseHighestPointMove(pieces, moves, pointScheme) {
     let highestPoints = null
     let bestMove = null
@@ -63,7 +67,7 @@ function chooseHighestPointMove(pieces, moves, pointScheme) {
         let points = 0
         //if its a piece, find the points you will get for capturing
         if (pieceName) {
-            points = pointScheme.find(item => item.name === pieceName).points
+            points = findPoints(pieceName, pointScheme)
         }
 
         //if there is no move yet, fill the move with a random one
@@ -102,4 +106,74 @@ function chooseBestPieceToMove(pieces, movingPieces, pointScheme) {
         move: bestMove,
         points: bestPoints
     }
+}
+
+function chooseBestMove(pieces, movingPieces, pointScheme) {
+    let bestPiece = chooseRandom(movingPieces)
+    let bestMove = chooseRandom(bestPiece.possibleMoves)
+    let board = pieces.map(function (arr) {
+        return arr.slice();
+    });
+
+    let position = evaluatePosition(board, pointScheme)
+    // console.log('oldPosition:' + position)
+
+    movingPieces.forEach(piece => {
+
+        let oldRow = piece.row
+        let oldColumn = piece.column
+
+        // console.log('checking piece:' + getPieceName(pieces, [oldRow, oldColumn]))
+        piece.possibleMoves.forEach(move => {
+            let copyBoard = board.map(function (arr) {
+                return arr.slice();
+            });
+
+            // console.log('checking move:' + move)
+
+
+            copyBoard[move[0]][move[1]] = piece
+            copyBoard[oldRow][oldColumn] = ''
+
+
+            // console.log(copyBoard)
+
+            let newPosition = evaluatePosition(copyBoard, pointScheme)
+
+            // console.log('newPosition:' + newPosition)
+
+            if (newPosition < position) {
+                position = newPosition
+                bestPiece = piece
+                bestMove = move
+            }
+        })
+    })
+    return {
+        position: position,
+        piece: bestPiece,
+        move: bestMove
+    }
+}
+
+
+function evaluatePosition(board, pointScheme) {
+    let total = 0
+    for (i = 0; i < 8; i++) {
+        for (j = 0; j < 8; j++) {
+            let piece = board[i][j]
+            if (typeof piece == 'object') {
+                let pieceName = getPieceName(board, [i, j])
+                if (pieceName) {
+                    points = findPoints(pieceName, pointScheme)
+                }
+                if (piece.color == 'white') {
+                    total += points
+                } else {
+                    total -= points
+                }
+            }
+        }
+    }
+    return total
 }
