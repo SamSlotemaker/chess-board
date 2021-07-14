@@ -269,9 +269,6 @@ function mouseReleased() {
             }
             turnList.insertAdjacentHTML('beforeend', `<li>${turnCount}. ${placedMove}</li>`)
 
-
-
-
             //swap turns
             if (movedPiece.color == 'white') {
                 turn = 'black'

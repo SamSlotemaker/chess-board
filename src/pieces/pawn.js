@@ -127,30 +127,4 @@ class Pawn {
             board[move[1]][move[0]].possibleMove = true
         })
     }
-
-    //check if piece can move
-    move(row, column) {
-        if (this.color !== turn) {
-            return false
-        }
-        let oldRow = this.row
-        let oldColumn = this.column
-
-        let newRow = row
-        let newColumn = column
-
-        //if move is possible, update position and return true
-        let pieceCanMove = false;
-        this.possibleMoves.forEach(move => {
-
-            //if a possible move is the same as the move that you're trying to do
-            if (move[0] === newRow && move[1] === newColumn) {
-                // check if piece would capture own color, if not, move is valid
-                // return true
-                pieceCanMove = true
-            }
-        })
-        return pieceCanMove
-    }
-
 }

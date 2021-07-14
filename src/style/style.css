@@ -38,3 +38,8 @@ aside .turn_message {
 aside #turn {
     font-size: 2em;
 }
+
+#turn-list {
+    max-height: 60vh;
+    overflow-y: scroll;
+}
