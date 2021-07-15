@@ -58,8 +58,9 @@ function findPoints(name, pointScheme) {
 }
 
 function chooseBestMove(pieces, movingPieces, pointScheme) {
-    let bestPiece = chooseRandom(movingPieces)
-    let bestMove = chooseRandom(bestPiece.possibleMoves)
+    // let bestPiece = chooseRandom(movingPieces)
+    // let bestMove = chooseRandom(bestPiece.possibleMoves)
+    let scenarios = []
     let board = pieces.map(function (arr) {
         return arr.slice();
     });
@@ -72,69 +73,91 @@ function chooseBestMove(pieces, movingPieces, pointScheme) {
         let oldRow = blackPiece.row
         let oldColumn = blackPiece.column
 
-        let piece = Object.assign(Object.create(Object.getPrototypeOf(blackPiece)), blackPiece)
-        piece.checkPossibleMoves(board)
+        blackPiece.checkPossibleMoves(board)
 
         //go trough each move to find the best one
-        piece.possibleMoves.forEach(move => {
+        blackPiece.possibleMoves.forEach(move => {
             let copyBoard = board.map(function (arr) {
                 return arr.slice();
-            });
+            })
 
             //clone the pawn into the copyboard place
-            copyBoard[move[0]][move[1]] = Object.assign(Object.create(Object.getPrototypeOf(piece)), piece)
+            copyBoard[move[0]][move[1]] = blackPiece
             copyBoard[oldRow][oldColumn] = ''
 
-            copyBoard[move[0]][move[1]].row = move[0]
-            copyBoard[move[0]][move[1]].column = move[1]
-
-            let newPosition = evaluatePosition(copyBoard, pointScheme)
+            let newPositionBlack = evaluatePosition(copyBoard, pointScheme)
 
             //now, for every move white can make, calculate the best move for black
             const movingPiecesWhite = findPiecesThatCanMove(findOwnPieces(copyBoard, 'white'))
+            // let positionWhite = newPosition
 
-            let positionWhite = newPosition
+            let bestMoveWhite;
+            let bestPieceWhite;
+            let testboard;
+
             movingPiecesWhite.forEach(whitePiece => {
-                whitePiece = Object.assign(Object.create(Object.getPrototypeOf(whitePiece)), whitePiece)
                 let oldRow = whitePiece.row
                 let oldColumn = whitePiece.column
-                piece.checkPossibleMoves(board)
 
-                piece.possibleMoves.forEach(whiteMove => {
+                whitePiece.checkPossibleMoves(copyBoard)
+
+                whitePiece.possibleMoves.forEach(whiteMove => {
                     let copyBoard2 = copyBoard.map(function (arr) {
                         return arr.slice();
                     });
 
+
+                    console.log(copyBoard2)
+
                     //clone the pawn into the copyboard place
-                    copyBoard2[whiteMove[0]][whiteMove[1]] = Object.assign(Object.create(Object.getPrototypeOf(whitePiece)), whitePiece)
+                    copyBoard2[whiteMove[0]][whiteMove[1]] = whitePiece
                     copyBoard2[oldRow][oldColumn] = ''
 
-                    copyBoard2[whiteMove[0]][whiteMove[1]].row = whiteMove[0]
-                    copyBoard2[whiteMove[0]][whiteMove[1]].column = whiteMove[1]
+                    newPositionWhite = evaluatePosition(copyBoard2, pointScheme)
 
-                    let newPosition = evaluatePosition(copyBoard2, pointScheme)
-                    //change positionWhite to new position when it's the best move for white
-                    if (newPosition > positionWhite) {
-                        positionWhite = newPosition
+                    if (newPositionWhite >= newPositionBlack) {
+                        newPositionBlack = newPositionWhite
+                        bestPieceWhite = whitePiece
+                        bestMoveWhite = whiteMove
+                        testboard = copyBoard2
                     }
                 })
             })
-
-            if (positionWhite <= position) {
-                position = positionWhite
-                bestPiece = piece
-                bestMove = move
-            }
+            scenarios.push({
+                board: testboard,
+                position: newPositionBlack,
+                bestMoveWhite: bestMoveWhite,
+                bestPieceWhite: bestPieceWhite,
+                pieceBlack: blackPiece,
+                moveBlack: move
+            })
         })
     })
 
+    console.log(scenarios)
+    // find scenario with lowest possible position score
+    let min;
+    scenarios.forEach(scenario => {
+        if (!min) {
+            min = scenario.position
+        } else {
+            if (scenario.position < min) {
+                min = scenario.position
+            }
+        }
+    })
+
+    const bestScenario = scenarios.find(scenario => scenario.position == min)
+    console.log(bestScenario)
+    const bestMove = bestScenario.moveBlack
+    const bestPiece = bestScenario.pieceBlack
+
     return {
-        position: position,
+        position: bestScenario.position,
         piece: bestPiece,
         move: bestMove
     }
 }
-
 
 function evaluatePosition(board, pointScheme) {
     let total = 0

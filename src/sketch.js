@@ -217,10 +217,6 @@ function mouseReleased() {
 
 function placeMove(fromRow, fromColumn, toRow, toColumn) {
     let pieceCanMove = pieces[fromRow][fromColumn].move(toRow, toColumn)
-    // const movingPieces = findPiecesThatCanMove(findOwnPieces(pieces, 'black'))
-    // const bestOptions = chooseBestMove(pieces, movingPieces, pointScheme)
-
-    console.log(pieceCanMove)
 
     if (pieceCanMove) {
         //swap places in array with moved piece
