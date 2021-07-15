@@ -58,14 +58,10 @@ function findPoints(name, pointScheme) {
 }
 
 function chooseBestMove(pieces, movingPieces, pointScheme) {
-    // let bestPiece = chooseRandom(movingPieces)
-    // let bestMove = chooseRandom(bestPiece.possibleMoves)
     let scenarios = []
     let board = pieces.map(function (arr) {
         return arr.slice();
     });
-
-    let position = evaluatePosition(board, pointScheme)
 
     //go trough each piece and fill the best move when you found it
     movingPieces.forEach(blackPiece => {
@@ -106,9 +102,6 @@ function chooseBestMove(pieces, movingPieces, pointScheme) {
                         return arr.slice();
                     });
 
-
-                    console.log(copyBoard2)
-
                     //clone the pawn into the copyboard place
                     copyBoard2[whiteMove[0]][whiteMove[1]] = whitePiece
                     copyBoard2[oldRow][oldColumn] = ''
@@ -133,8 +126,6 @@ function chooseBestMove(pieces, movingPieces, pointScheme) {
             })
         })
     })
-
-    console.log(scenarios)
     // find scenario with lowest possible position score
     let min;
     scenarios.forEach(scenario => {
@@ -147,8 +138,8 @@ function chooseBestMove(pieces, movingPieces, pointScheme) {
         }
     })
 
-    const bestScenario = scenarios.find(scenario => scenario.position == min)
-    console.log(bestScenario)
+    const bestScenarios = scenarios.filter(scenario => scenario.position == min)
+    const bestScenario = chooseRandom(bestScenarios)
     const bestMove = bestScenario.moveBlack
     const bestPiece = bestScenario.pieceBlack
 
