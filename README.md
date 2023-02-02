@@ -1,6 +1,8 @@
 # chess-board
 A working chessboard, made with P5.js. The chess logic is completely written from scratch. 
 
+Live link: https://samslotemaker.github.io/chess-board/src/
+
 ## checklist
 
 ### Setup
